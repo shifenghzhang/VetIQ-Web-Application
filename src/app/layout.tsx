@@ -24,15 +24,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
+
     <html lang="en">
+
       <body className={`font-sans ${karla.variable}`}>
         <div className="flex min-h-screen">
-          <Appbar></Appbar>
-          <Header></Header>
-          <PageWrapper>{children}</PageWrapper>
+          <div>
+            <Appbar></Appbar>
+          </div>
 
+          <div className="flex h-full w-full flex-col">
+            <Header />
+            <PageWrapper>{children}</PageWrapper>
+          </div>
         </div>
-        
+
         {/* <TRPCReactProvider>{children}</TRPCReactProvider> */}
       </body>
     </html>

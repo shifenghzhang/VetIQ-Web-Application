@@ -7,9 +7,6 @@ export default {
     extend: {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
-      },
-      backgroundImage: {
-        'gradient-to-br': 'bg-gradient-to-b from-neutral-50 to-sky-100'
       }
     },
   },
