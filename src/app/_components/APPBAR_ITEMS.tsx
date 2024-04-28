@@ -22,7 +22,7 @@ export const APPNAV_ITEMS: AppNavItem[]=[
         path: "/analytics",
         icon: <TbDeviceDesktopAnalytics size={20} />,
         submenu: true,
-        subMenuItems: [{title: "Client", path: "/analytics/client"}, {title: "Patient", path: "/analytics/patient"}]
+        subMenuItems: [{title: "Client", path: "/analytics/client"}, {title: "Patient", path: "/analytics/patient"}, {title: "Report", path: "/analytics/report"}]
     },
     {
         title: "Help",
