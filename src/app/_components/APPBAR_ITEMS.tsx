@@ -33,7 +33,11 @@ export const APPNAV_ITEMS: AppNavItem[]=[
         title: "Feedback",
         path: "/feedback",
         icon: <BsEnvelope size={20} />
+    },
+    {
+        title: "Setting",
+        path: "/setting"
     }
-
+    
 ]
     
