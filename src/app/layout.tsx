@@ -1,10 +1,13 @@
 import "~/styles/globals.css";
 
-import { Inter } from "next/font/google";
+import { Karla } from "next/font/google";
 
-import { TRPCReactProvider } from "~/trpc/react";
+//import { TRPCReactProvider } from "~/trpc/react";
+import Appbar from "./_components/appbar";
+import Header from "./_components/header";
+import PageWrapper from "./_components/pagewrapper";
 
-const inter = Inter({
+const karla = Karla({
   subsets: ["latin"],
   variable: "--font-sans",
 });
@@ -21,9 +24,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
+
     <html lang="en">
-      <body className={`font-sans ${inter.variable}`}>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+
+      <body className={`font-sans ${karla.variable}`}>
+        <div className="flex min-h-screen">
+          <div>
+            <Appbar></Appbar>
+          </div>
+
+          <div className="flex h-full w-full flex-col">
+            <Header />
+            <PageWrapper>{children}</PageWrapper>
+          </div>
+        </div>
+
+        {/* <TRPCReactProvider>{children}</TRPCReactProvider> */}
       </body>
     </html>
   );
