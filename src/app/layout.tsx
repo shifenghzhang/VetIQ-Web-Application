@@ -7,7 +7,7 @@ import { Karla } from "next/font/google";
 import Appbar from "./_components/appbar";
 import Header from "./_components/header";
 import PageWrapper from "./_components/pagewrapper";
-import SearchBox from './_components/searchbox';
+import SearchBox from './_components/searchBox';
 
 const karla = Karla({
   subsets: ["latin"],
@@ -37,8 +37,8 @@ export default function RootLayout({
 
           <div className="flex h-full w-full flex-col">
             <Header />
-            <PageWrapper>{children}</PageWrapper>
             <SearchBox />
+            <PageWrapper>{children}</PageWrapper>
           </div>
         </div>
 

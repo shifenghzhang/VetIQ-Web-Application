@@ -5,3 +5,9 @@ export type AppNavItem = {
     submenu?: boolean;
     subMenuItems?: AppNavItem[];
 };
+
+export interface Article {
+    id: number;
+    title: string;
+    summary: string;
+}
