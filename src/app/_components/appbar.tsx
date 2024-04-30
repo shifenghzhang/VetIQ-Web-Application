@@ -2,9 +2,12 @@
 import { APPNAV_ITEMS } from "./APPBAR_ITEMS";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { useState } from "react";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
-
+import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
+import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+import { useSidebar } from "../_contexts/sidebarContext";
 
 const Appbar = () => {
     const pathname = usePathname();
@@ -13,59 +16,92 @@ const Appbar = () => {
     const toggleSubMenu = (initial: boolean) => {
         setOpenMenu(!initial);
     }
+
+    const {isCollapsed, setIsCollapsed} = useSidebar();
+
+    const toggleAppbarCollapseHandler = () => {
+        setIsCollapsed(!isCollapsed);
+    }
+
+    useEffect(() => {
+        if (isCollapsed) {
+            setOpenMenu(false);  // Close the submenu when the sidebar is collapsed
+        }
+    }, [isCollapsed]);
+    
+    const sidebarBaseClass = "fixed text-black h-full shadow-lg shadow-gray-900/200 transition ease-in-out duration-500 transition-all"
+    const sidebarClasses = isCollapsed 
+        ? `${sidebarBaseClass} w-[5rem]`  // width when collapsed
+        : `${sidebarBaseClass} w-[16rem]`; // normal width
+        
+    const buttonBaseClass = "absolute z-50 top-[4rem] w-[1.5rem] h-[1.5rem] border border-gray-200 flex justify-center items-center cursor-pointer translate-x-2/4 bg-white rounded-full duration-500 transition-all"
+    const buttonClasses = isCollapsed
+        ? `${buttonBaseClass} left-[3.5rem]`
+        : `${buttonBaseClass} left-[14.5rem]`
     
     return(
-        <aside className="fixed text-black z-50 h-full shadow-lg shadow-gray-900/200 transition duration-300 ease-in-out w-[16rem]">
-            <div className="flex items-center justify-center py-5 px-3.5">
-                <h3 className="text-2xl">Vet IQ</h3>
-            </div>
-            <nav className="flex flex-col gap-2 transition duration-300 ml-4 mt-10 mr-4">
-                {
-                    APPNAV_ITEMS.map((item) => {
-                        const isActive = pathname === item.path;
-                        const itemClass = isActive
-                        ? "flex items-center gap-4 p-4 bg-[rgb(187,221,225)] rounded-md transition duration-200 ease-in-out cursor-pointer"
-                        : "flex items-center gap-4 p-4  rounded-md transition duration-200 ease-in-out cursor-pointer"
-                        return item.submenu ? (
-                            <div key={item.title}>
-                                <span onClick={() => toggleSubMenu(openMenu)} className={itemClass}>
-                                    {item.icon}
-                                    {item.title}
-                                    {openMenu ? <IoIosArrowDown /> : <IoIosArrowForward />}
-                                </span>
-                                {openMenu && (
-                                    <div className="ml-14">
-                                        
-                                        
-                                    
-                                        {item.subMenuItems?.map(subitem => (
-                                            
-                                            <Link href={subitem.path} key={subitem.title}>
-                                                <span className={pathname === subitem.path
-                                                ? "flex items-center gap-4 p-2 mb-2 bg-[rgb(187,221,225)] rounded-md transition duration-200 ease-in-out"
-                                                : "flex items-center gap-4 p-2 mb-2  rounded-md transition duration-200 ease-in-out"
-                                                }>
-                                                    {subitem.title}
-                                                </span>
-                                            </Link>
-                                        ))}
-                                    </div>                                        
-                                )}                                
-                            </div>
-                        ) : (
-                            <Link href={item.path} key={item.title}>
-                                    <span className={itemClass}>
-                                        {item.icon}
-                                        {item.title}
+        <div>
+            <button className= {buttonClasses}
+                onClick={toggleAppbarCollapseHandler}>
+                    
+                {isCollapsed ? <MdOutlineKeyboardArrowRight /> : <MdOutlineKeyboardArrowLeft />}
+            </button>
+            <aside className={sidebarClasses}>
+                <div className="flex items-center justify-center py-5 px-3.5">
+                    <h3 className="text-2xl">Vet IQ</h3>
+                </div>
+                <nav className="flex flex-col gap-2 transition duration-300 ml-4 mt-10 mr-4">
+                    {
+                        APPNAV_ITEMS.map((item) => {
+                            const isActive = pathname === item.path;
+                            const itemClass = isActive
+                            ? "flex items-center gap-4 p-4 bg-[rgb(187,221,225)] rounded-md transition duration-200 ease-in-out cursor-pointer"
+                            : "flex items-center gap-4 p-4  rounded-md transition duration-200 ease-in-out cursor-pointer"
+                            return item.submenu ? (
+                                <div key={item.title}>
+                                    <span onClick={() => toggleSubMenu(openMenu)} className={itemClass}>
+                                        {item.icon && React.cloneElement(item.icon, { className: "text-2xl" })}
+                                        {!isCollapsed && <span>{item.title}</span>}
+                                        {
+                                            !isCollapsed && (openMenu ? <IoIosArrowDown /> : <IoIosArrowForward />)
+                                        }
                                     </span>
-                            </Link>
-                        )
+                                    {openMenu && (
+                                        <div className="ml-14">
                                             
-                    })
-                }
+                                            
+                                        
+                                            {item.subMenuItems?.map(subitem => (
+                                                
+                                                <Link href={subitem.path} key={subitem.title}>
+                                                    <span className={pathname === subitem.path
+                                                    ? "flex items-center gap-4 p-2 mb-2 bg-[rgb(187,221,225)] rounded-md transition duration-200 ease-in-out"
+                                                    : "flex items-center gap-4 p-2 mb-2  rounded-md transition duration-200 ease-in-out"
+                                                    }>
+                                                        {!isCollapsed && <span>{subitem.title}</span>}
+                                                    </span>
+                                                </Link>
+                                            ))}
+                                        </div>                                        
+                                    )}                                
+                                </div>
+                            ) : (
+                                <Link href={item.path} key={item.title}>
+                                        <span className={itemClass}>
+                                            {item.icon && React.cloneElement(item.icon, { className: "text-2xl" })}
+                                            {!isCollapsed && <span>{item.title}</span>}
+                                        </span>
+                                </Link>
+                            )
+                                                
+                        })
+                    }
 
-            </nav>
-        </aside>
+                </nav>
+            </aside>
+
+        </div>
+        
     );
 }
 

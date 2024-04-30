@@ -35,11 +35,9 @@ const articles: Article[] = [
 const HomePage: React.FC = () => {
   return (
       <main>
-        <ArticleArea articles={articles} />
+          <ArticleArea articles={articles} />
       </main>
-  );
-};
-
-export default HomePage;
+  )
+}
 
 
