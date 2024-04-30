@@ -1,4 +1,3 @@
-// components/articleArea.tsx
 import React from 'react';
 import type {Article} from "~/types/type";
 

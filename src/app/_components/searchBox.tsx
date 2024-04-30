@@ -7,14 +7,16 @@ interface Clinic {
     address: string;
 }
 
-// will use this data for testing
+// This data is for testing purposes
 const clinicsData = [
-    { id: 1, name: 'Sunshine Clinic', address: '123 Sunshine St'},
-    { id: 2, name: 'CBD Clinic', address: '456 CBD St'},
-    { id: 3, name: 'Doncaster Clinic', address: '789 Doncaster St'},
+    { id: 1, name: 'Sunshine Clinic', address: '123 Sunshine St' },
+    { id: 2, name: 'CBD Clinic', address: '456 CBD St' },
+    { id: 3, name: 'Doncaster Clinic', address: '789 Doncaster St' },
 ];
 
 const SearchBox = () => {
+    "use client"; // Ensures this component runs only on the client side
+
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [filteredClinics, setFilteredClinics] = useState<Clinic[]>(clinicsData);
 
@@ -32,20 +34,19 @@ const SearchBox = () => {
     };
 
     return (
-            <div className="flex justify-center pt-4">
-                <div className="relative">
-                    <input
-                        type="search"
-                        placeholder="Search..."
-                        value={searchTerm}
-                        onChange={handleSearchChange}
-                        className="w-full pl-10 pr-4 py-2 rounded-full bg-blue-100 border border-blue-300 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    />
-
-                    <div className="absolute top-0 left-0 mt-2 ml-3">
-
-                    </div>
+        <div className="flex justify-center pt-4">
+            <div className="relative">
+                <input
+                    type="search"
+                    placeholder="Search..."
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    className="w-full pl-10 pr-4 py-2 rounded-full bg-blue-100 border border-blue-300 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                />
+                <div className="absolute top-0 left-0 mt-2 ml-3">
+                    {/* Icon or other element could go here */}
                 </div>
+            </div>
 
             {searchTerm && (
                 <div className="search-results">
