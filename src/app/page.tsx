@@ -31,13 +31,15 @@ const articles: Article[] = [
       summary: 'VetIQ helps you optimize your business performance. Our platform provides insights into your financial performance, operational efficiency, and strategic growth. We help you identify opportunities to improve your business and achieve your goals.',
     }
 ];
+export default function Home() {
+    return (
+        <main>
+        <ArticleArea articles={articles}/>
+        </main>
+    );
 
-const HomePage: React.FC = () => {
-  return (
-      <main>
-          <ArticleArea articles={articles} />
-      </main>
-  )
 }
+
+
 
 

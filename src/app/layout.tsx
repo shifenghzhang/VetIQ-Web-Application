@@ -7,6 +7,7 @@ import { Karla } from "next/font/google";
 import Appbar from "./_components/appbar";
 import Header from "./_components/header";
 import PageWrapper from "./_components/pagewrapper";
+import Footer from "~/app/_components/footer";
 
 
 const karla = Karla({
@@ -21,30 +22,22 @@ export const metadata = {
 };
 
 export default function RootLayout({
-  children,
-}: {
+                                     children,
+                                   }: {
   children: React.ReactNode;
 }) {
   return (
-
-    <html lang="en">
-
+      <html lang="en">
       <body className={`font-sans ${karla.variable}`}>
-        <div className="flex min-h-screen">
-          <div>
-            <Appbar></Appbar>
-          </div>
-
-          <div className="flex h-full w-full flex-col">
-            <Header />
-            <PageWrapper>{children}</PageWrapper>
-
-          </div>
-            <Footer />
+      <div className="flex flex-col min-h-screen">
+        <Appbar />
+        <Header />
+        <div className="flex-grow">
+          <PageWrapper>{children}</PageWrapper>
         </div>
-
-        {/* <TRPCReactProvider>{children}</TRPCReactProvider> */}
+        <Footer />
+      </div>
       </body>
-    </html>
+      </html>
   );
 }
