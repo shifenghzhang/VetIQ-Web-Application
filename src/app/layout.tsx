@@ -1,6 +1,5 @@
 import "~/styles/globals.css";
 
-
 import { Karla } from "next/font/google";
 
 //import { TRPCReactProvider } from "~/trpc/react";
@@ -8,6 +7,7 @@ import Appbar from "./_components/appbar";
 import Header from "./_components/header";
 import PageWrapper from "./_components/pagewrapper";
 import SearchBox from './_components/searchbox';
+import { SidebarProvider } from "./_contexts/sidebarContext";
 
 const karla = Karla({
   subsets: ["latin"],
@@ -25,25 +25,30 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  //const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   return (
+    <SidebarProvider>
+      <html lang="en">
 
-    <html lang="en">
+        <body className={`font-sans ${karla.variable}`}>
+          <div className="flex min-h-screen">
+            <div>
+              <Appbar></Appbar>
+            </div>
 
-      <body className={`font-sans ${karla.variable}`}>
-        <div className="flex min-h-screen">
-          <div>
-            <Appbar></Appbar>
+            <div className="flex h-full w-full flex-col">
+              <Header />
+              <PageWrapper>{children}</PageWrapper>
+              <SearchBox />
+            </div>
           </div>
 
-          <div className="flex h-full w-full flex-col">
-            <Header />
-            <PageWrapper>{children}</PageWrapper>
-            <SearchBox />
-          </div>
-        </div>
+          {/* <TRPCReactProvider>{children}</TRPCReactProvider> */}
+        </body>
+      </html>
 
-        {/* <TRPCReactProvider>{children}</TRPCReactProvider> */}
-      </body>
-    </html>
+    </SidebarProvider>
+
+
   );
 }
