@@ -6,8 +6,8 @@ export type AppNavItem = {
     subMenuItems?: AppNavItem[];
 };
 
-export interface Article {
+export type Article = {
     id: number;
     title: string;
-    summary: string;
-}
+    summary: string | string[];
+};
