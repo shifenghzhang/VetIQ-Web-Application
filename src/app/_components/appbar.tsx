@@ -8,7 +8,8 @@ import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { useSidebar } from "../_contexts/sidebarContext";
-
+import Image
+ from "next/image";
 const Appbar = () => {
     const pathname = usePathname();
     const [openMenu, setOpenMenu] = useState<boolean>(false);
@@ -47,8 +48,8 @@ const Appbar = () => {
                 {isCollapsed ? <MdOutlineKeyboardArrowRight /> : <MdOutlineKeyboardArrowLeft />}
             </button>
             <aside className={sidebarClasses}>
-                <div className="flex items-center justify-center py-5 px-3.5">
-                    <h3 className="text-2xl">Vet IQ</h3>
+                <div className="flex items-center justify-center py-5 px-3.5 mt-4">
+                    <Image src="/images/VetIQ_Logo.png" alt="Logo" width={110} height={145} />
                 </div>
                 <nav className="flex flex-col gap-2 transition duration-300 ml-4 mt-10 mr-4">
                     {
@@ -58,7 +59,7 @@ const Appbar = () => {
                             ? "flex items-center gap-4 p-4 bg-[rgb(187,221,225)] rounded-md transition duration-200 ease-in-out cursor-pointer"
                             : "flex items-center gap-4 p-4  rounded-md transition duration-200 ease-in-out cursor-pointer"
                             return item.submenu ? (
-                                <div key={item.title}>
+                                <div key={item.title} >
                                     <span onClick={() => toggleSubMenu(openMenu)} className={itemClass}>
                                         {item.icon && React.cloneElement(item.icon, { className: "text-2xl" })}
                                         {!isCollapsed && <span>{item.title}</span>}
