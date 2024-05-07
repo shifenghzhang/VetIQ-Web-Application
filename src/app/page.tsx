@@ -1,4 +1,5 @@
 // pages/app/home/page.tsx
+"use client"
 import React from 'react';
 import {Article} from "~/types/type";
 import ArticleArea from "~/app/_components/articleArea";
