@@ -1,6 +1,7 @@
 // pages/app/home/page.tsx
 "use client"
 import React from 'react';
+import HeroSection from "~/app/_components/hero-section";
 import {Article} from "~/types/type";
 import ArticleArea from "~/app/_components/articleArea";
 
@@ -62,6 +63,7 @@ const articles: Article[] = [
 export default function Home() {
     return (
         <main>
+         <HeroSection />
         <ArticleArea articles={articles}/>
         </main>
     );
