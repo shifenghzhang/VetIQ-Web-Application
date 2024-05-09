@@ -2,7 +2,6 @@
 "use client"
 import React from 'react';
 import HeroSection from "~/app/_components/hero-section";
-import Image from 'public/images/iStock-1224227548.jpg';
 import {Article} from "~/types/type";
 import ArticleArea from "~/app/_components/articleArea";
 
