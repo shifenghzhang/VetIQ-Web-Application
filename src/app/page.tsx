@@ -4,6 +4,7 @@ import React from 'react';
 import HeroSection from "~/app/_components/hero-section";
 import {Article} from "~/types/type";
 import ArticleArea from "~/app/_components/articleArea";
+import Testimonial from './_components/testimonial';
 
 
 const articles: Article[] = [
@@ -63,8 +64,9 @@ const articles: Article[] = [
 export default function Home() {
     return (
         <main>
-         <HeroSection />
-        <ArticleArea articles={articles}/>
+          <HeroSection />
+          <ArticleArea articles={articles}/>
+          <Testimonial />
         </main>
     );
 
