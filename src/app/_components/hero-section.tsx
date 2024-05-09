@@ -1,5 +1,6 @@
 import React from "react";
-import image from "next/image";
+import image from "public/images/iStock-1224227548.jpg";
+
 const HeroSection = () => {
     return (
         <section className="text-gray-600 body-font">
