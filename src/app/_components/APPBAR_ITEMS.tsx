@@ -30,7 +30,7 @@ export const APPNAV_ITEMS: AppNavItem[]=[
         path: "/help",
         icon: <BsQuestionCircle size={20} />,
         submenu: true,
-        subMenuItems: [{title: "Contact Us", path: "/help/Contact US"}, {title: "FAQs", path: "/help/FAQs"}, {title: "Resource Library", path: "/help/Resource Library"}]
+        subMenuItems: [{title: "Contact Us", path: "/help/Contact Us"}, {title: "FAQs", path: "/help/FAQs"}, {title: "Resource Library", path: "/help/Resource Library"}]
     },
     {
         title: "Feedback",
