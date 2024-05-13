@@ -1,8 +1,11 @@
 import React from 'react'
+import ContactUs from '../_components/contactUs'
 
 function page() {
   return (
-    <div>Help</div>
+    <main>
+      <ContactUs />
+    </main>
   )
 }
 
