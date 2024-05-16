@@ -42,18 +42,7 @@ const Header = () => {
     <header className={headerClass}>
       <h1 className="ml-10 text-lg">{getTitle()}</h1>
       <div className="relative">
-        <CgProfile className="text-4xl mr-10 cursor-pointer" onClick={toggleMenu} />
-        {showMenu && (
-          <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
-            <a
-              href="#"
-              className="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-blue-500 hover:text-white"
-              onClick={handleLoginClick}
-            >
-              Login
-            </a>
-          </div>
-        )}
+        <CgProfile className="text-4xl mr-10 cursor-pointer" onClick={handleLoginClick} />
       </div>
       {showLoginCard && <LoginCard onClose={handleLoginClose} />}
     </header>
