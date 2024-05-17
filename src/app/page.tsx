@@ -4,6 +4,7 @@ import React from 'react';
 import HeroSection from "~/app/_components/hero-section";
 import {Article} from "~/types/type";
 import ArticleArea from "~/app/_components/articleArea";
+import CTA from './_components/CTA';
 import Testimonial from './_components/testimonial';
 
 
@@ -39,6 +40,7 @@ export default function Home() {
         <main>
           <HeroSection />
           <ArticleArea articles={articles}/>
+          <CTA />
           <Testimonial />
         </main>
     );
