@@ -1,7 +1,16 @@
 import React from "react";
 import image from "next/image";
+import { useRouter } from "next/router";
 
 const HeroSection = () => {
+  const handleCTAClick = () => {
+    document.getElementById('CTA')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleArticleAreaClick = () => {
+    document.getElementById('article-area')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section className="text-gray-600 body-font">
       <div className="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
@@ -19,11 +28,13 @@ const HeroSection = () => {
           <div className="flex justify-center">
             <button
               className="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+              onClick={handleArticleAreaClick}
             >
               Learn More
             </button>
             <button
               className="ml-4 inline-flex text-gray-700 bg-yellow-400 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded text-lg"
+              onClick={handleCTAClick}
             >
               Book a Demo
             </button>

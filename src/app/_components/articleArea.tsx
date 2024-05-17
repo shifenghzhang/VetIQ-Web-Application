@@ -10,7 +10,7 @@ interface ArticleAreaProps {
 
 const ArticleArea: React.FC<ArticleAreaProps> = ({ articles }) => {
   return (
-    <div className="container mx-auto px-5">
+    <div id="article-area" className="container mx-auto px-5">
       <div style={{ position: 'relative' }}>
         <Carousel
           showArrows={true}

@@ -8,6 +8,7 @@ import CTA from './_components/CTA';
 import Testimonial from './_components/testimonial';
 
 
+
 const articles: Article[] = [
   {
     id: 1,
