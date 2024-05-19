@@ -67,7 +67,7 @@ const LoginCard: React.FC<LoginCardProps> = ({ onClose }) => {
           </div>
         </form>
         <div className="mt-4 text-center">
-          <span className="text-gray-600">Don't have an account? </span>
+          <span className="text-gray-600">Don&apos;t have an account? </span>
           <button
             className="text-blue-500 hover:text-blue-700 font-bold focus:outline-none"
             onClick={handleRegisterClick}
