@@ -4,11 +4,13 @@ import { CgProfile } from "react-icons/cg";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "../_contexts/sidebarContext";
 import LoginCard from '../login/page';
+import { useLoginCard } from "../_contexts/logincardContext";
 
 const Header = () => {
   const pathname = usePathname();
   const [showMenu, setShowMenu] = useState(false);
-  const [showLoginCard, setShowLoginCard] = useState(false);
+  const { showLoginCard, setShowLoginCard } = useLoginCard();
+
 
   const getTitle = () => {
     if (pathname === "/") {
@@ -28,14 +30,8 @@ const Header = () => {
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
-
   const handleLoginClick = () => {
     setShowLoginCard(true);
-    setShowMenu(false);
-  };
-
-  const handleLoginClose = () => {
-    setShowLoginCard(false);
   };
 
   return (
@@ -44,7 +40,7 @@ const Header = () => {
       <div className="relative">
         <CgProfile className="text-4xl mr-10 cursor-pointer" onClick={handleLoginClick} />
       </div>
-      {showLoginCard && <LoginCard onClose={handleLoginClose} />}
+      {showLoginCard && <LoginCard />}
     </header>
   );
 };
