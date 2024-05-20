@@ -6,15 +6,30 @@ type Tab = 'Profile' | 'Password' | 'Email' | 'Notifications';
 function Page() {
   const [activeTab, setActiveTab] = useState<Tab>('Profile');
 
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
   const handleTabChange = (tab: Tab) => {
     setActiveTab(tab);
   };
 
+  const handlePasswordChange = (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO Add change password logic
+    console.log('Current Password:', currentPassword);
+    console.log('New Password:', newPassword);
+    console.log('Confirm Password:', confirmPassword);
+    // Reset form fields
+    setCurrentPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="text-3xl font-bold mb-8">Settings</h1>
-        <div className="bg-white shadow rounded-lg">
+      <div className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="bg-white shadow rounded-lg max-w-8xl mx-auto">
           <nav className="flex space-x-4 px-6 py-4">
             <button
               onClick={() => handleTabChange('Profile')}
@@ -61,25 +76,72 @@ function Page() {
             {activeTab === 'Profile' && (
               <div>
                 <h2 className="text-xl font-bold mb-4">Profile Settings</h2>
-                {/* Add profile settings form fields */}
+                {/* TODO */}
               </div>
             )}
             {activeTab === 'Password' && (
               <div>
                 <h2 className="text-xl font-bold mb-4">Password Settings</h2>
-                {/* Add password change form fields */}
+                <form onSubmit={handlePasswordChange}>
+                  <div className="mb-4">
+                    <label htmlFor="currentPassword" className="block text-gray-700 font-bold mb-2">
+                      Current Password
+                    </label>
+                    <input
+                      type="password"
+                      id="currentPassword"
+                      className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="newPassword" className="block text-gray-700 font-bold mb-2">
+                      New Password
+                    </label>
+                    <input
+                      type="password"
+                      id="newPassword"
+                      className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="confirmPassword" className="block text-gray-700 font-bold mb-2">
+                      Confirm Password
+                    </label>
+                    <input
+                      type="password"
+                      id="confirmPassword"
+                      className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                  >
+                    Change Password
+                  </button>
+                </form>
+
               </div>
             )}
             {activeTab === 'Email' && (
               <div>
                 <h2 className="text-xl font-bold mb-4">Email Settings</h2>
-                {/* Add email settings */}
+                {/* TODO */}
               </div>
             )}
             {activeTab === 'Notifications' && (
               <div>
                 <h2 className="text-xl font-bold mb-4">Notification Settings</h2>
-                {/* Add notification settings */}
+                {/* TODO */}
               </div>
             )}
           </div>
