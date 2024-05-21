@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 
-type Tab = 'Profile' | 'Password' | 'Email' | 'Notifications';
+type Tab = 'Profile' | 'Password' | 'Security' | 'Email' | 'Notifications';
 
 function Page() {
   const [activeTab, setActiveTab] = useState<Tab>('Profile');
@@ -50,6 +50,16 @@ function Page() {
               } px-3 py-2 rounded-md text-sm font-medium`}
             >
               Password
+            </button>
+            <button
+              onClick={() => handleTabChange('Security')}
+              className={`${
+                activeTab === 'Security'
+                  ? 'bg-blue-100 text-blue-600'
+                  : 'text-gray-500 hover:text-gray-700'
+              } px-3 py-2 rounded-md text-sm font-medium`}
+            >
+              Security
             </button>
             <button
               onClick={() => handleTabChange('Email')}
@@ -130,6 +140,12 @@ function Page() {
                   </button>
                 </form>
 
+              </div>
+            )}
+            {activeTab === 'Security' && (
+              <div>
+                <h2 className="text-xl font-bold mb-4">Security Settings</h2>
+                {/* TODO */}
               </div>
             )}
             {activeTab === 'Email' && (
