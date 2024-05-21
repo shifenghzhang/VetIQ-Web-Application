@@ -30,12 +30,12 @@ const Appbar = () => {
         }
     }, [isCollapsed]);
     
-    const sidebarBaseClass = "fixed text-black h-full shadow-lg shadow-gray-900/200 transition ease-in-out duration-500 transition-all"
+    const sidebarBaseClass = "fixed text-black bg-customSkyBlue h-full shadow-lg shadow-gray-900/200 transition ease-in-out duration-500 transition-all"
     const sidebarClasses = isCollapsed 
         ? `${sidebarBaseClass} w-[5rem]`  // width when collapsed
         : `${sidebarBaseClass} w-[16rem]`; // normal width
         
-    const buttonBaseClass = "absolute z-50 top-[4rem] w-[1.5rem] h-[1.5rem] border border-gray-200 flex justify-center items-center cursor-pointer translate-x-2/4 bg-white rounded-full duration-500 transition-all"
+    const buttonBaseClass = "absolute z-50 top-[4rem] w-[1.5rem] h-[1.5rem] border border-gray-300 flex justify-center items-center cursor-pointer translate-x-2/4 bg-white rounded-full duration-500 transition-all"
     const buttonClasses = isCollapsed
         ? `${buttonBaseClass} left-[3.5rem]`
         : `${buttonBaseClass} left-[14.5rem]`
@@ -56,8 +56,8 @@ const Appbar = () => {
                         APPNAV_ITEMS.map((item) => {
                             const isActive = pathname === item.path;
                             const itemClass = isActive
-                            ? "flex items-center gap-4 p-4 bg-[rgb(187,221,225)] rounded-md transition duration-200 ease-in-out cursor-pointer"
-                            : "flex items-center gap-4 p-4  rounded-md transition duration-200 ease-in-out cursor-pointer"
+                            ? "flex items-center gap-4 p-4 bg-customBlack text-white rounded-xl transition duration-200 ease-in-out cursor-pointer"
+                            : "flex items-center gap-4 p-4 text-black rounded-xl transition duration-200 ease-in-out cursor-pointer"
                             return item.submenu ? (
                                 <div key={item.title} >
                                     <span onClick={() => toggleSubMenu(openMenu)} className={itemClass}>
@@ -69,15 +69,13 @@ const Appbar = () => {
                                     </span>
                                     {openMenu && (
                                         <div className="ml-14">
-                                            
-                                            
-                                        
+                                                                                                                                
                                             {item.subMenuItems?.map(subitem => (
                                                 
                                                 <Link href={subitem.path} key={subitem.title}>
                                                     <span className={pathname === subitem.path
-                                                    ? "flex items-center gap-4 p-2 mb-2 bg-[rgb(187,221,225)] rounded-md transition duration-200 ease-in-out"
-                                                    : "flex items-center gap-4 p-2 mb-2  rounded-md transition duration-200 ease-in-out"
+                                                    ? "flex items-center gap-4 p-2 mb-2 pl-4 bg-customBlack text-white rounded-xl transition duration-200 ease-in-out"
+                                                    : "flex items-center gap-4 p-2 mb-2 pl-4 text-black rounded-xl transition duration-200 ease-in-out"
                                                     }>
                                                         {!isCollapsed && <span>{subitem.title}</span>}
                                                     </span>
