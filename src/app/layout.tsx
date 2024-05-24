@@ -8,6 +8,8 @@ import PageWrapper from "./_components/pagewrapper";
 
 import { SidebarProvider } from "./_contexts/sidebarContext";
 import { LoginCardProvider } from "./_contexts/logincardContext";
+import { AuthProvider } from "./_contexts/authProvider";
+
 const karla = Karla({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -27,25 +29,27 @@ export default function RootLayout({
   //const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   return (
     <SidebarProvider>
-      <LoginCardProvider>        
+      <LoginCardProvider>
+        <AuthProvider>     
 
-        <html lang="en">
+          <html lang="en">
 
-          <body className={`font-sans ${karla.variable}`}>
-            <div className="flex min-h-screen">
-              <div>
-                <Appbar></Appbar>
+            <body className={`font-sans ${karla.variable}`}>
+              <div className="flex min-h-screen">
+                <div>
+                  <Appbar></Appbar>
+                </div>
+
+                <div className="flex h-full w-full flex-col">
+                  <Header />
+                  <PageWrapper>{children}</PageWrapper>
+
+                </div>
               </div>
 
-              <div className="flex h-full w-full flex-col">
-                <Header />
-                <PageWrapper>{children}</PageWrapper>
-
-              </div>
-            </div>
-
-            </body>
-        </html>
+              </body>
+          </html>
+        </AuthProvider>
       </LoginCardProvider>
     </SidebarProvider>
 

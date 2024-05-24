@@ -2,14 +2,52 @@
 import React, { FormEvent, useState } from 'react';
 import RegisterCard from '../register/page';
 import { useLoginCard } from '../_contexts/logincardContext';
+import axios from 'axios';
+import { useAuth } from '../_contexts/authProvider';
 
+interface MongoUsers {
+  consulting_vet: boolean;
+  email: string | null;
+  password: string;
+  site_id: number;
+  user_id: number;
+  user_name: string | null;
+}
 const LoginCard: React.FC = () => {
   const { setShowLoginCard, isLogin, toggleLogin } = useLoginCard();
-  //const [isLogin, setIsLogin] = useState(true);
+  const {user, login} = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Perform login logic here
+
+    try {
+
+      const response = await axios.get<MongoUsers[]>('http://127.0.0.1:5000/api/mongo_users');
+      for (const user of response.data) {
+        if (user.email === email) {
+          if (user.password === password) {
+            login(user);
+            setShowLoginCard(false);
+
+          }
+          else {
+            setErrorMessage("Incorrect user details");
+          }
+        }
+        else {
+          setErrorMessage("Incorrect user details");
+        }
+      }
+
+    }
+
+    catch (error) {
+      console.error('Error:', error)
+    }
+    
   };
 
   // const handleToggle = () => {
@@ -52,10 +90,10 @@ const LoginCard: React.FC = () => {
               </label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="email"
                 type="email"
                 placeholder="Email"
                 required
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="mb-6">
@@ -64,10 +102,10 @@ const LoginCard: React.FC = () => {
               </label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="password"
                 type="password"
                 placeholder="Password"
                 required
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <div className="mt-4 text-center">
@@ -78,6 +116,7 @@ const LoginCard: React.FC = () => {
                 Log In
               </button>
             </div>
+            {errorMessage && <p className="text-red-500 text-sm mt-3">{errorMessage}</p>}
           </form>
         ) : (
           <RegisterCard />
