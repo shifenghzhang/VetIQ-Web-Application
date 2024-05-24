@@ -30,7 +30,7 @@ const ContactUs = () => {
                 </div>
               </div>
               <div className="p-2 w-full">
-                <button className="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Send Message</button>
+                <button className="flex mx-auto text-black bg-customSkyBlue border-0 py-2 px-8 focus:outline-none hover:text-white hover:bg-customBlack rounded text-lg">Send Message</button>
               </div>
               <div className="p-2 w-full pt-8 mt-8 border-t border-gray-200 text-center">
                 <a className="text-indigo-500">example@email.com</a>

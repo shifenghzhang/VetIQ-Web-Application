@@ -27,7 +27,7 @@ const HeroSection = () => {
           </p>
           <div className="flex justify-center">
             <button
-              className="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+              className="inline-flex text-black bg-customSkyBlue border-0 py-2 px-6 focus:outline-none hover:text-white hover:bg-customBlack rounded text-lg"
               onClick={handleArticleAreaClick}
             >
               Learn More
