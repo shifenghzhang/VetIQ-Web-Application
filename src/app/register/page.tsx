@@ -1,12 +1,62 @@
 'use client';
 import React, { FormEvent } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useLoginCard } from '../_contexts/logincardContext';
 
-
+interface MongoUsers {
+  consulting_vet: boolean;
+  email: string | null;
+  password: string;
+  site_id: number;
+  user_id: number;
+  user_name: string | null;
+}
+interface PostResponse {
+  message: string;
+}
 
 const RegisterCard = () => {
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState<string | null>("");
+  const [password, setPassword]= useState("");
+  const [errorMessage, setErroressage] = useState("");
+
+  const {toggleLogin} = useLoginCard();
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Perform registration logic here
+    try {
+      const response = await axios.get<MongoUsers[]>('http://127.0.0.1:5000/api/mongo_users')
+      for (const user of response.data) {
+        if (email === user.email) {
+          setErroressage("User with this email already exists");
+          return;
+        }
+      }
+      const newUSer : MongoUsers = {
+        email: email,
+        consulting_vet: true,
+        password: password,
+        site_id: 3,
+        user_id: response.data.length + 1,
+        user_name: username
+
+      }
+
+      const postResponse = await axios.post<PostResponse>('http://127.0.0.1:5000/api/add_mongo_user', newUSer)
+      console.log(postResponse.data);
+
+      if (postResponse.data.message == "user added successfully") {
+        toggleLogin();
+      }
+
+      
+    }
+    catch (error) {
+      console.error('Error:', error);
+
+    }
   };
 
   return (
@@ -17,10 +67,10 @@ const RegisterCard = () => {
         </label>
         <input
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="Username"
-          type="Username"
-          placeholder="Username"
+          type="username"
+          placeholder="username"
           required
+          onChange={(e) => setUsername(e.target.value)}
         />
       </div>
       <div className="mb-4">
@@ -29,10 +79,10 @@ const RegisterCard = () => {
         </label>
         <input
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="email"
           type="email"
           placeholder="Email"
           required
+          onChange={(e) => setEmail(e.target.value)}
         />
       </div>
       <div className="mb-6">
@@ -41,10 +91,10 @@ const RegisterCard = () => {
         </label>
         <input
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="password"
           type="password"
           placeholder="Password"
           required
+          onChange = {(e) => setPassword(e.target.value)}
         />
       </div>
       <button
@@ -53,6 +103,7 @@ const RegisterCard = () => {
         >
           Register
       </button>
+      {errorMessage && <p className="text-red-500 text-sm mt-3">{errorMessage}</p>}
     </form>
 
   );

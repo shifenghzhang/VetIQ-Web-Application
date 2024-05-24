@@ -53,22 +53,22 @@ const Home = () => {
     fetchData().catch(console.error); // Ensure promises are handled
   }, []);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  // if (loading) {
+  //   return <p>Loading...</p>;
+  // }
 
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
+  // if (error) {
+  //   return <p>Error: {error}</p>;
+  // }
 
   return (
     <div>
-      <h1>Users</h1>
+      {/* <h1>Users</h1>
       <ul>
         {data.map((user) => (
           <li key={user.UserID}>{user.UserName}</li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   );
 };

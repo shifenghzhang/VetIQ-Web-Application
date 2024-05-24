@@ -4,17 +4,17 @@ import RegisterCard from '../register/page';
 import { useLoginCard } from '../_contexts/logincardContext';
 
 const LoginCard: React.FC = () => {
-  const { setShowLoginCard } = useLoginCard();
-  const [isLogin, setIsLogin] = useState(true);
+  const { setShowLoginCard, isLogin, toggleLogin } = useLoginCard();
+  //const [isLogin, setIsLogin] = useState(true);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Perform login logic here
   };
 
-  const handleToggle = () => {
-    setIsLogin(!isLogin);
-  };
+  // const handleToggle = () => {
+  //   setIsLogin(!isLogin);
+  // };
 
   const handleClose = () => {
     setShowLoginCard(false);
@@ -31,16 +31,16 @@ const LoginCard: React.FC = () => {
         </button>
         <div className="flex mb-6">
           <button
-            onClick={handleToggle}
+            onClick={toggleLogin}
             className={`font-bold flex-1 text-xl pb-2 ${isLogin ? 'text-[rgb(0,146,226)] border-b-2 border-[rgb(0,146,226)]' : 'text-black'}`}
           >
             Login
           </button>
           <button
-            onClick={handleToggle}
+            onClick={toggleLogin}
             className={`font-bold flex-1 text-xl pb-2 ${!isLogin ? 'text-[rgb(0,146,226)] border-b-2 border-[rgb(0,146,226)]' : 'text-black'}`}
           >
-            Sign Up
+            Register
           </button>
         </div>
 

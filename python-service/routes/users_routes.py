@@ -38,7 +38,10 @@ def add_mongo_users():
 @user_bp.route('/delete_mongo_user/<user_id>', methods=['DELETE'])
 def delete_mongo_user(user_id):
     try:
-        users_collection.delete_one({"user_id": user_id})
-        return jsonify({"message": "User deleted successfully."})
+        result = users_collection.delete_one({"user_id": int(user_id)})
+        if result.deleted_count == 1:
+            return jsonify({"message": "User deleted successfully."})
+        else:
+            return jsonify({"message": "User not found."}), 404
     except Exception as e:
-        return jsonify({'error': str(e)})
+        return jsonify({'error': str(e)}), 500
