@@ -7,6 +7,11 @@ export default {
     extend: {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
+      },
+      colors: {
+        customSkyBlue: 'rgb(230, 237, 240)',
+        customDarkBlue: 'rgb(0, 146, 226),',
+        customBlack: 'rgb(50, 48, 47)'
       }
     },
   },

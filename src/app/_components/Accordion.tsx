@@ -17,7 +17,7 @@ const Accordion: React.FC<AccordionProps> = ({ question, answer }) => {
         <span>{question}</span>
         {/*accordionOpen? <span>-</span> : <span>+</span>*/}
         <svg
-          className="fill-indigo-500 shrink-0 ml-8"
+          className="fill-rgb(50, 48, 47) shrink-0 ml-8"
           width="16"
           height="16"
           xmlns="http://www.w3.org/2000/svg"
