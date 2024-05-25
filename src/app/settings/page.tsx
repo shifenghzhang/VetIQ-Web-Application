@@ -9,6 +9,20 @@ function Page() {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordStrength, setPasswordStrength] = useState('');
+
+  const [name, setName] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+
+  const [twoFactorAuth, setTwoFactorAuth] = useState(false);
+
+  const [email, setEmail] = useState('');
+
+  const [notificationPreferences, setNotificationPreferences] = useState({
+    email: false
+  });
+  const [notificationFrequency, setNotificationFrequency] = useState('immediate');
 
   const handleTabChange = (tab: Tab) => {
     setActiveTab(tab);
@@ -16,14 +30,54 @@ function Page() {
 
   const handlePasswordChange = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO Add change password logic
+    // TODO: Password Change
     console.log('Current Password:', currentPassword);
     console.log('New Password:', newPassword);
     console.log('Confirm Password:', confirmPassword);
-    // Reset form fields
+    // Reset form
     setCurrentPassword('');
     setNewPassword('');
     setConfirmPassword('');
+  };
+
+  const checkPasswordStrength = (password: string) => {
+    const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
+    const mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
+
+    if (strongRegex.test(password)) {
+      setPasswordStrength('strong');
+    } else if (mediumRegex.test(password)) {
+      setPasswordStrength('medium');
+    } else {
+      setPasswordStrength('weak');
+    }
+  };
+
+  const handleProfileUpdate = (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: Profile
+    console.log('Name:', name);
+    console.log('Date of Birth:', dateOfBirth);
+    console.log('Phone Number:', phoneNumber);
+  };
+
+  const handleSecurityUpdate = (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: 2FA
+    console.log('Two-Factor Authentication:', twoFactorAuth);
+  };
+
+  const handleEmailUpdate = (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: Update Email
+    console.log('Email:', email);
+  };
+
+  const handleNotificationUpdate = (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: Notif
+    console.log('Notification Preferences:', notificationPreferences);
+    console.log('Notification Frequency:', notificationFrequency);
   };
 
   return (
@@ -86,7 +140,53 @@ function Page() {
             {activeTab === 'Profile' && (
               <div>
                 <h2 className="text-xl font-bold mb-4">Profile Settings</h2>
-                {/* TODO */}
+                <form onSubmit={handleProfileUpdate}>
+                  <div className="mb-4">
+                    <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="dateOfBirth" className="block text-gray-700 font-bold mb-2">
+                      Date of Birth
+                    </label>
+                    <input
+                      type="date"
+                      id="dateOfBirth"
+                      className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
+                      value={dateOfBirth}
+                      onChange={(e) => setDateOfBirth(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="phoneNumber" className="block text-gray-700 font-bold mb-2">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      id="phoneNumber"
+                      className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                  >
+                    Save Changes
+                  </button>
+                </form>
               </div>
             )}
             {activeTab === 'Password' && (
@@ -115,9 +215,27 @@ function Page() {
                       id="newPassword"
                       className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
                       value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
+                      onChange={(e) => {
+                        setNewPassword(e.target.value);
+                        checkPasswordStrength(e.target.value);
+                      }}
                       required
                     />
+                    <div className="mt-2">
+                      <span className={`text-sm ${
+                        passwordStrength === 'strong'
+                          ? 'text-green-500'
+                          : passwordStrength === 'medium'
+                          ? 'text-yellow-500'
+                          : 'text-red-500'
+                      }`}>
+                        {passwordStrength === 'strong'
+                          ? 'Strong'
+                          : passwordStrength === 'medium'
+                          ? 'Medium'
+                          : 'Weak'}
+                      </span>
+                    </div>
                   </div>
                   <div className="mb-4">
                     <label htmlFor="confirmPassword" className="block text-gray-700 font-bold mb-2">
@@ -139,25 +257,101 @@ function Page() {
                     Change Password
                   </button>
                 </form>
-
               </div>
             )}
             {activeTab === 'Security' && (
               <div>
                 <h2 className="text-xl font-bold mb-4">Security Settings</h2>
-                {/* TODO */}
+                <form onSubmit={handleSecurityUpdate}>
+                  <div className="mb-4">
+                    <label htmlFor="twoFactorAuth" className="block text-gray-700 font-bold mb-2">
+                      Two-Factor Authentication
+                    </label>
+                    <input
+                      type="checkbox"
+                      id="twoFactorAuth"
+                      className="form-checkbox h-5 w-5 text-blue-600"
+                      checked={twoFactorAuth}
+                      onChange={(e) => setTwoFactorAuth(e.target.checked)}
+                    />
+                  </div>
+                </form>
               </div>
             )}
             {activeTab === 'Email' && (
               <div>
                 <h2 className="text-xl font-bold mb-4">Email Settings</h2>
-                {/* TODO */}
+                <form onSubmit={handleEmailUpdate}>
+                  <div className="mb-4">
+                    <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                  >
+                    Save Changes
+                  </button>
+                </form>
               </div>
             )}
             {activeTab === 'Notifications' && (
               <div>
                 <h2 className="text-xl font-bold mb-4">Notification Settings</h2>
-                {/* TODO */}
+                <form onSubmit={handleNotificationUpdate}>
+                  <div className="mb-4">
+                    <label className="block text-gray-700 font-bold mb-2">
+                      Notification Preferences
+                    </label>
+                    <div className="flex items-center mb-2">
+                      <input
+                        type="checkbox"
+                        id="emailNotifications"
+                        className="form-checkbox h-5 w-5 text-blue-600"
+                        checked={notificationPreferences.email}
+                        onChange={(e) =>
+                          setNotificationPreferences({
+                            ...notificationPreferences,
+                            email: e.target.checked,
+                          })
+                        }
+                      />
+                      <label htmlFor="emailNotifications" className="ml-2 text-gray-700">
+                        Email
+                      </label>
+                    </div>
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="notificationFrequency" className="block text-gray-700 font-bold mb-2">
+                      Notification Frequency
+                    </label>
+                    <select
+                      id="notificationFrequency"
+                      className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
+                      value={notificationFrequency}
+                      onChange={(e) => setNotificationFrequency(e.target.value)}
+                    >
+                      <option value="weekly">Weekly</option>
+                      <option value="monthly">Monthly</option>
+                      <option value="quarterly">Quarterly</option>
+                    </select>
+                  </div>
+                  <button
+                    type="submit"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                  >
+                    Save Changes
+                  </button>
+                </form>
               </div>
             )}
           </div>
