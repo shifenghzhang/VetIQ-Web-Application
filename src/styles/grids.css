@@ -1,0 +1,22 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto;
+    gap: 16px;
+    width: 100%;
+    max-width: 1200px;
+}
+  
+.small-graph {
+    grid-column: span 1;
+}
+  
+.large-graph {
+    grid-column: span 3;
+}
+  
+.insights {
+    grid-column: span 1;
+    grid-row: span 2;
+}
+  

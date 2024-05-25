@@ -1,10 +1,12 @@
-import React from 'react'
+"use client";
+import React from 'react';
+import {LoadBarChart, LoadPieChart } from './LoadData'; // Import your Test component
 
-function page() {
+function Page() {
   return (
-    <div>
+    <div className="dashboard-container">
       <div className="flex items-center mb-4 w-full max-w-xl">
-        {/* Add your dropdown menus here */}
+        {/* Add your dropdowns here */}
         <select className="mr-3.5 py-2 px-20 text-left rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
           <option value="clinic">Clinic</option>
           {/* Add options here */}
@@ -21,27 +23,29 @@ function page() {
           <option value="month">Quarter 2</option>
           <option value="month">Quarter 3</option>
           <option value="month">Quarter 4</option>
-          {/* Add month options here */}
+          {/* Add more options here */}
         </select>
       </div>
 
-      {/* Add graphs and other components here */}
-      <div className="graph-container mb-4">
-        {/* Graph will go here */}
-        <div className="h-32 bg-gray-300 rounded-lg" />
-      </div>
-
-      <div className="graph-container mb-4">
-        
-        <div className="h-32 bg-gray-300 rounded-lg" />
-      </div>
-
-      <div className="graph-container mb-4">
-        
-        <div className="h-32 bg-gray-300 rounded-lg" />
+      {/* Grid container */}
+      <div className="grid-container">
+        <div className="small-graph">
+          <div className="h-32 bg-gray-300 rounded-lg">
+          </div>
+          <LoadPieChart />
+          <LoadBarChart />
+        </div>
+        <div className="large-graph">
+          <div className="h-32 bg-gray-300 rounded-lg">
+          </div>
+        </div>
+        <div className="insights">
+          <div className="h-32 bg-gray-300 rounded-lg"></div>
+        </div>
       </div>
     </div>
   );
 }
 
-export default page;
+export default Page;
+
