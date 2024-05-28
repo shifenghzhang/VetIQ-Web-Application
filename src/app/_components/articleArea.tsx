@@ -3,10 +3,19 @@ import React from 'react';
 import type { Article } from "~/types/type";
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import Image from 'next/image';
 
 interface ArticleAreaProps {
   articles: Article[];
 }
+
+const images = [
+  '/images/carousel-1.png',
+  '/images/carousel-2.png',
+  '/images/carousel-3.png',
+  '/images/carousel-4.png',
+  '/images/carousel-5.png'
+];
 
 const ArticleArea: React.FC<ArticleAreaProps> = ({ articles }) => {
   return (
@@ -63,29 +72,39 @@ const ArticleArea: React.FC<ArticleAreaProps> = ({ articles }) => {
             />
           )}
         >
-          {articles.map((article) => (
+          {articles.map((article, index) => (
             <div
               key={article.id}
               className="bg-white rounded-lg p-6"
               style={{
                 height: '400px',
                 display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                padding: '20px 40px', // Adjust padding for consistent spacing
-                margin: '0 30px',     // Adjust margin for consistent spacing
+                flexDirection: 'row',
+                justifyContent: 'space-between',
               }}
             >
-              <h3 className="text-xl font-bold text-gray-800 mb-4">{article.title}</h3>
-              {Array.isArray(article.summary) ? (
-                <ul className="text-gray-600">
-                  {article.summary.map((point, index) => (
-                    <li key={index}>{point}</li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-gray-600">{article.summary}</p>
-              )}
+              <div className='mb-3' style={{ width: '50%', padding: '20px' }}>
+                <h3 className="text-xl font-bold text-gray-800 mb-4 mt-16">{article.title}</h3>
+                {Array.isArray(article.summary) ? (
+                  <ul className="text-gray-600">
+                    {article.summary.map((point, pointIndex) => (
+                      <li key={pointIndex}>{point}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-gray-600">{article.summary}</p>
+                )}
+              </div>
+              <div className='mb-3 mr-2' style={{ width: '50%', padding: '20px', position: 'relative' }}>
+                {images[index] && (
+                  <Image                     
+                    alt={`carousel-${index + 1}`} 
+                    src={images[index]!} 
+                    layout="fill" 
+                    objectFit="cover"
+                  />
+                )}
+              </div>
             </div>
           ))}
         </Carousel>
