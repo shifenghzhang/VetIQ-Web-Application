@@ -35,7 +35,7 @@ const Appbar = () => {
         ? `${sidebarBaseClass} w-[5rem]`  // width when collapsed
         : `${sidebarBaseClass} w-[16rem]`; // normal width
         
-    const buttonBaseClass = "absolute z-50 top-[4rem] w-[1.5rem] h-[1.5rem] border border-gray-300 flex justify-center items-center cursor-pointer translate-x-2/4 bg-white rounded-full duration-500 transition-all"
+    const buttonBaseClass = "fixed z-50 top-[4rem] w-[1.5rem] h-[1.5rem] border border-gray-300 flex justify-center items-center cursor-pointer translate-x-2/4 bg-white rounded-full duration-500 transition-all"
     const buttonClasses = isCollapsed
         ? `${buttonBaseClass} left-[3.5rem]`
         : `${buttonBaseClass} left-[14.5rem]`
