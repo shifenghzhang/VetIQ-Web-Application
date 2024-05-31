@@ -47,7 +47,10 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
       .enter().append('text')
       .attr('transform', d => `translate(${label.centroid(d)})`)
       .attr('dy', '0.35em')
-      .text(d => `${d.data.TransactionTypeName} (${d.data.PercentageContribution}%)`)
+      .text(d => {
+        const percentage = (d.data.PercentageContribution * 1).toFixed(2);
+        return `${d.data.TransactionTypeName} (${percentage}%)`;
+      })
       .style('text-anchor', 'middle')
       .style('font-size', '12px');
   }, [data]);
@@ -56,5 +59,3 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
 };
 
 export default PieChart;
-
-
