@@ -49,7 +49,7 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
       .attr('dy', '0.35em')
       .text(d => {
         const percentage = (d.data.PercentageContribution * 1).toFixed(2);
-        return `${d.data.TransactionTypeName} (${percentage}%)`;
+        return d.data.PercentageContribution >= 2 ? `${d.data.TransactionTypeName} (${percentage}%)` : ''; // Hides labels with less than 5%
       })
       .style('text-anchor', 'middle')
       .style('font-size', '12px');
