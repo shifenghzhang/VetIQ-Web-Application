@@ -28,7 +28,7 @@ export const APPNAV_ITEMS: AppNavItem[]=[
     {
         title: "Help",
         path: "/help",
-        icon: <BsQuestionCircle size={20} />
+        icon: <BsQuestionCircle size={20} />,
     },
     {
         title: "Feedback",

@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React from 'react';
 import type { Article } from "~/types/type";
 import { Carousel } from 'react-responsive-carousel';
