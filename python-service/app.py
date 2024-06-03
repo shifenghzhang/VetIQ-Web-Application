@@ -2,7 +2,6 @@ from flask import Flask
 from flask_cors import CORS
 from routes.users_routes import user_bp
 from routes.serviceData_routes import serviceData_bp
-from routes.test_routes import clinic_bp
 
 app = Flask(__name__)
 CORS(app)
