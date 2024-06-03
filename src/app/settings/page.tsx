@@ -1,5 +1,18 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, FormEvent } from 'react';
+import axios from 'axios';
+
+interface MongoUsers {
+  consulting_vet: boolean;
+  email: string | null;
+  password: string;
+  site_id: number;
+  user_id: number;
+  user_name: string | null;
+}
+interface PutResponse {
+  message: string;
+}
 
 type Tab = 'Profile' | 'Password' | 'Security' | 'Email' | 'Notifications';
 
@@ -10,14 +23,14 @@ function Page() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordStrength, setPasswordStrength] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordSuccess, setPasswordSuccess] = useState(false);
 
   const [name, setName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
 
   const [twoFactorAuth, setTwoFactorAuth] = useState(false);
-
-  const [email, setEmail] = useState('');
 
   const [notificationPreferences, setNotificationPreferences] = useState({
     email: false
@@ -28,16 +41,77 @@ function Page() {
     setActiveTab(tab);
   };
 
-  const handlePasswordChange = (e: React.FormEvent) => {
+  const handlePasswordChange = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // TODO: Password Change
-    console.log('Current Password:', currentPassword);
-    console.log('New Password:', newPassword);
-    console.log('Confirm Password:', confirmPassword);
-    // Reset form
-    setCurrentPassword('');
-    setNewPassword('');
-    setConfirmPassword('');
+  
+    if (newPassword !== confirmPassword) {
+      setPasswordError('New password and confirm password do not match.');
+      setPasswordSuccess(false);
+      return;
+    }
+  
+    try {
+      // Get the current user's email or user ID (you may need to adjust this based on your authentication system)
+      const userEmail = 'test@tester.com'; // Replace with the actual user's email or user ID
+  
+      // Fetch the user from MongoDB
+      const response = await axios.get<MongoUsers[]>('http://127.0.0.1:5000/api/mongo_users');
+      const user = response.data.find((user) => user.email === userEmail);
+  
+      if (!user) {
+        setPasswordError('User not found');
+        setPasswordSuccess(false);
+        return;
+      }
+      
+      console.log(user.user_id);
+
+      // Check if the current password matches the password stored in MongoDB
+      if (currentPassword !== user.password) {
+        setPasswordError('Current password is incorrect');
+        setPasswordSuccess(false);
+        return;
+      }
+  
+      // Update the user's password in MongoDB
+      const updatedUser: MongoUsers = {
+        ...user,
+        password: newPassword,
+      };
+
+      const putResponse = await axios.put<PutResponse>(
+        `http://127.0.0.1:5000/api/update_mongo_user_password/${user.user_id}`,
+        updatedUser
+      );
+  
+      if (putResponse.status === 200) {
+        // Password updated successfully
+        setCurrentPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
+        setPasswordError('');
+        setPasswordSuccess(true);
+      } else {
+        // Handle error case
+        setPasswordError('An error occurred while updating the password.');
+        setPasswordSuccess(false);
+      }
+    } catch (error) {
+      console.error('Error updating password:', error);
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        setPasswordError(error.response.data.error || 'An error occurred while updating the password.');
+      } else if (error.request) {
+        // Request was made but no response was received
+        setPasswordError('No response received from the server.');
+      } else {
+        setPasswordError('An error occurred while setting up the request.');
+      }
+    } else {
+      setPasswordError('An unexpected error occurred.');
+    }
+    setPasswordSuccess(false);
+    }
   };
 
   const checkPasswordStrength = (password: string) => {
@@ -53,7 +127,7 @@ function Page() {
     }
   };
 
-  const handleProfileUpdate = (e: React.FormEvent) => {
+  const handleProfileUpdate = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // TODO: Profile
     console.log('Name:', name);
@@ -61,19 +135,13 @@ function Page() {
     console.log('Phone Number:', phoneNumber);
   };
 
-  const handleSecurityUpdate = (e: React.FormEvent) => {
+  const handleSecurityUpdate = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // TODO: 2FA
     console.log('Two-Factor Authentication:', twoFactorAuth);
   };
 
-  const handleEmailUpdate = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Update Email
-    console.log('Email:', email);
-  };
-
-  const handleNotificationUpdate = (e: React.FormEvent) => {
+  const handleNotificationUpdate = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // TODO: Notif
     console.log('Notification Preferences:', notificationPreferences);
@@ -192,6 +260,12 @@ function Page() {
             {activeTab === 'Password' && (
               <div>
                 <h2 className="text-xl font-bold mb-4">Password Settings</h2>
+                {passwordSuccess && (
+                  <p className="text-green-500 mb-4">Password updated successfully!</p>
+                )}
+                {passwordError && (
+                  <p className="text-red-500 mb-4">{passwordError}</p>
+                )}
                 <form onSubmit={handlePasswordChange}>
                   <div className="mb-4">
                     <label htmlFor="currentPassword" className="block text-gray-700 font-bold mb-2">
@@ -275,32 +349,6 @@ function Page() {
                       onChange={(e) => setTwoFactorAuth(e.target.checked)}
                     />
                   </div>
-                </form>
-              </div>
-            )}
-            {activeTab === 'Email' && (
-              <div>
-                <h2 className="text-xl font-bold mb-4">Email Settings</h2>
-                <form onSubmit={handleEmailUpdate}>
-                  <div className="mb-4">
-                    <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-                  >
-                    Save Changes
-                  </button>
                 </form>
               </div>
             )}
