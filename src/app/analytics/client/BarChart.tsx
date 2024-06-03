@@ -8,11 +8,10 @@ interface BarChartProps {
 const BarChart: React.FC<BarChartProps> = ({ data }) => {
   const svgRef = useRef<SVGSVGElement | null>(null);
 
-  //Change chart visuals here
   useEffect(() => {
     if (!svgRef.current) return;
 
-    const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+    const margin = { top: 20, right: 30, bottom: 60, left: 40 }; // Adjusted bottom margin
     const width = 600 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
@@ -32,9 +31,16 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
       .nice()
       .range([height, 0]);
 
+    // Define color scale
+    const color = d3.scaleOrdinal(d3.schemeCategory10);
+
     svg.append('g')
       .attr('transform', `translate(0,${height})`)
-      .call(d3.axisBottom(x));
+      .call(d3.axisBottom(x))
+      .selectAll('text')
+      .attr('transform', 'rotate(45)')
+      .style('text-anchor', 'start')
+      .style('font-size', '12px');
 
     svg.append('g')
       .call(d3.axisLeft(y));
@@ -46,7 +52,8 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
       .attr('x', d => x(d.TransactionTypeName)!)
       .attr('y', d => y(d.Count))
       .attr('width', x.bandwidth())
-      .attr('height', d => height - y(d.Count));
+      .attr('height', d => height - y(d.Count))
+      .attr('fill', d => color(d.TransactionTypeName)); // Apply color scale to bars
   }, [data]);
 
   return <svg ref={svgRef} />;
