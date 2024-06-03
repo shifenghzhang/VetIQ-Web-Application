@@ -2,7 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
+/* html,
 body {
   @apply min-h-screen font-sans bg-gradient-to-b from-neutral-50 via-blue-50 to-blue-100
+} */
+
+
+.custom-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  z-index: 2;
+  outline: none;
+}
+
+.custom-arrow-prev {
+  left: 2px;
+}
+
+.custom-arrow-next {
+  right: 2px;
+}
+
+.arrow-icon {
+  font-size: 22px;
+  color: black;
 }

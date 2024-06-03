@@ -2,7 +2,6 @@ import "~/styles/globals.css";
 
 import { Karla } from "next/font/google";
 
-//import { TRPCReactProvider } from "~/trpc/react";
 import Appbar from "./_components/appbar";
 import Header from "./_components/header";
 import PageWrapper from "./_components/pagewrapper";
@@ -43,7 +42,6 @@ export default function RootLayout({
             </div>
           </div>
 
-          {/* <TRPCReactProvider>{children}</TRPCReactProvider> */}
         </body>
       </html>
 
