@@ -12,8 +12,9 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="text-gray-600 body-font">
-      <div className="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
+    <section 
+    className="text-gray-600 body-font">
+      <div className="container mx-auto flex px-5 mb-24 mt-12 md:flex-row flex-col items-center">
         <div
           className="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center"
         >
@@ -27,13 +28,13 @@ const HeroSection = () => {
           </p>
           <div className="flex justify-center">
             <button
-              className="inline-flex text-black bg-customSkyBlue border-0 py-2 px-6 focus:outline-none hover:text-white hover:bg-customBlack rounded text-lg"
+              className="inline-flex text-black bg-customSkyBlue bg-opacity-70 border-0 py-2 px-6 focus:outline-none  hover:bg-opacity-100 rounded text-lg"
               onClick={handleArticleAreaClick}
             >
               Learn More
             </button>
             <button
-              className="ml-4 inline-flex text-gray-700 bg-yellow-400 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded text-lg"
+              className="ml-4 inline-flex text-white bg-customDarkBlue border-0 py-2 px-6 focus:outline-none hover:bg-opacity-70 rounded text-lg"
               onClick={handleCTAClick}
             >
               Book a Demo

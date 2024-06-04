@@ -19,7 +19,7 @@ const images = [
 
 const ArticleArea: React.FC<ArticleAreaProps> = ({ articles }) => {
   return (
-    <div className="container mx-auto">
+    <div id="article-area" className="container mx-auto">
       <div style={{ position: 'relative' }}>
         <Carousel
           showArrows={true}
@@ -83,6 +83,16 @@ const ArticleArea: React.FC<ArticleAreaProps> = ({ articles }) => {
                 justifyContent: 'space-between',
               }}
             >
+              <div className='mb-3 mr-2' style={{ width: '50%', padding: '20px', position: 'relative' }}>
+                {images[index] && (
+                  <Image                     
+                    alt={`carousel-${index + 1}`} 
+                    src={images[index]!} 
+                    layout="fill" 
+                    objectFit="cover"
+                  />
+                )}
+              </div>
               <div className='mb-3' style={{ width: '50%', padding: '20px' }}>
                 <h3 className="text-xl font-bold text-gray-800 mb-4 mt-16">{article.title}</h3>
                 {Array.isArray(article.summary) ? (
@@ -95,16 +105,7 @@ const ArticleArea: React.FC<ArticleAreaProps> = ({ articles }) => {
                   <p className="text-gray-600">{article.summary}</p>
                 )}
               </div>
-              <div className='mb-3 mr-2' style={{ width: '50%', padding: '20px', position: 'relative' }}>
-                {images[index] && (
-                  <Image                     
-                    alt={`carousel-${index + 1}`} 
-                    src={images[index]!} 
-                    layout="fill" 
-                    objectFit="cover"
-                  />
-                )}
-              </div>
+
             </div>
           ))}
         </Carousel>
