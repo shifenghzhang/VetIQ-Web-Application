@@ -53,7 +53,10 @@ const PieChart_DataPoint1: React.FC<PieChartProps> = ({ data }) => {
         .enter().append('text')
         .attr('transform', d => `translate(${label.centroid(d)})`)
         .attr('dy', '0.35em')
-        .text(d => `${d.data.TransactionTypeName} (${d.data.PercentageUsage.toFixed(2)}%)`)
+        .text(d => {
+          const percentage = (d.data.PercentageUsage * 1).toFixed(2);
+          return d.data.PercentageUsage >= 2 ? `${d.data.TransactionTypeName} (${percentage}%)` : ''; // Hides labels with less than 5%
+        })
         .style('text-anchor', 'middle')
         .style('font-size', '12px');
     };
