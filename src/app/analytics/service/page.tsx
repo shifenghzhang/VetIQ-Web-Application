@@ -1,7 +1,8 @@
 "use client";
 import React from 'react';
 import { Grid, Box } from '@mui/material';
-import './LoadData'; // Import charts or other data
+import {LoadPieChart_DataPoint1, LoadBarChart_DataPoint2, LoadPieChart_DataPoint3, 
+          LoadServiceRevenue, LoadServiceRevenueWOConsultation, LoadTopServices} from './LoadData'; // Import charts or other data
 
 function Page() {
   return (
@@ -29,51 +30,51 @@ function Page() {
       </div>
     
       <Grid container spacing={2}>
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} md={4}>
           <Box sx={{ height: '100px', backgroundColor: '#e0e0e0', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
-
+            <LoadServiceRevenue />
           </Box>
         </Grid>
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} md={4}>
           <Box sx={{ height: '100px', backgroundColor: '#e0e0e0', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
-
+          <LoadServiceRevenueWOConsultation />
           </Box>
         </Grid>
-        <Grid item xs={12} md={3}>
-          <Box sx={{ height: '100px', backgroundColor: '#e0e0e0', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
-     
-          </Box>
-        </Grid>
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} md={4}>
           <Box sx={{ height: '100px', backgroundColor: '#e0e0e0', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
      
           </Box>
         </Grid>
         <Grid item xs={12}>
           <Grid container spacing={2}>
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12} md={9.5}>
               <Box sx={{ height: '380px', backgroundColor: '#e0e0e0', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
-                
+                <h2>Total Revenue from Type of Services</h2>
+                <LoadBarChart_DataPoint2 />
               </Box>
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={2.5}>
               <Box sx={{ height: '380px', backgroundColor: '#e0e0e0', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
-            
+                <LoadTopServices />
               </Box>
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Box sx={{ height: '250px', backgroundColor: '#e0e0e0', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
-      
+        <Grid item xs={12} md={4}>
+          <Box sx={{ height: '350px', backgroundColor: '#e0e0e0', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
+            <h2>Percentage of services contributed to the revenue</h2>
+            <LoadPieChart_DataPoint3 />
           </Box>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Box sx={{ height: '250px', backgroundColor: '#e0e0e0', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
-          
+        <Grid item xs={12} md={4}>
+          <Box sx={{ height: '350px', backgroundColor: '#e0e0e0', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
+            <h2>Percentage of services used</h2>
+            <LoadPieChart_DataPoint1 />
           </Box>
         </Grid>
-       
+        <Grid item xs={12} md={4}>
+          <Box sx={{ height: '350px', backgroundColor: '#e0e0e0', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}></Box>
+        </Grid>
       </Grid>
 
     </div>
@@ -81,3 +82,4 @@ function Page() {
 }
 
 export default Page;
+

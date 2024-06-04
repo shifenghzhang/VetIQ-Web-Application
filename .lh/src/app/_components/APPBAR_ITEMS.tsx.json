@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/app/_components/APPBAR_ITEMS.tsx",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1716853092959,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1716853092959,
+            "name": "Commit-0",
+            "content": "import {BsHouseDoor} from \"react-icons/bs\"\r\nimport { BsQuestionCircle } from \"react-icons/bs\";\r\nimport { BsEnvelope } from \"react-icons/bs\";\r\nimport { TbDeviceDesktopAnalytics } from \"react-icons/tb\";\r\nimport { IoSettingsOutline } from \"react-icons/io5\";\r\n\r\ntype AppNavItem = {\r\n    title: string;\r\n    path: string;\r\n    icon?: JSX.Element;\r\n    submenu?: boolean;\r\n    subMenuItems?: AppNavItem[];\r\n};\r\n\r\nexport const APPNAV_ITEMS: AppNavItem[]=[\r\n    {\r\n        title: \"Home\",\r\n        path: \"/\",\r\n        icon: <BsHouseDoor size={20} />\r\n    },\r\n    {\r\n        title: \"Analytics\",\r\n        path: \"/analytics\",\r\n        icon: <TbDeviceDesktopAnalytics size={20} />,\r\n        submenu: true,\r\n        subMenuItems: [{title: \"Service\", path: \"/analytics/client\"}, {title: \"Patient\", path: \"/analytics/patient\"}]\r\n    },\r\n    {\r\n        title: \"Help\",\r\n        path: \"/help\",\r\n        icon: <BsQuestionCircle size={20} />\r\n    },\r\n    {\r\n        title: \"Feedback\",\r\n        path: \"/feedback\",\r\n        icon: <BsEnvelope size={20} />\r\n    },\r\n    {\r\n        title: \"Settings\",\r\n        path: \"/settings\",\r\n        icon: <IoSettingsOutline size={20} />\r\n    }\r\n    \r\n]\r\n    \r\n"
+        }
+    ]
+}
