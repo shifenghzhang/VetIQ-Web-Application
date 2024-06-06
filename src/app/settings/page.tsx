@@ -148,6 +148,10 @@ function Page() {
     console.log('Notification Frequency:', notificationFrequency);
   };
 
+  const handlePastePrevent = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -277,6 +281,7 @@ function Page() {
                       className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
                       value={currentPassword}
                       onChange={(e) => setCurrentPassword(e.target.value)}
+                      onPaste={handlePastePrevent}
                       required
                     />
                   </div>
@@ -293,6 +298,7 @@ function Page() {
                         setNewPassword(e.target.value);
                         checkPasswordStrength(e.target.value);
                       }}
+                      onPaste={handlePastePrevent}
                       required
                     />
                     <div className="mt-2">
@@ -321,6 +327,7 @@ function Page() {
                       className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
+                      onPaste={handlePastePrevent}
                       required
                     />
                   </div>
