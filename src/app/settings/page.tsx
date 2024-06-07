@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, FormEvent } from 'react';
+import React, { useState, FormEvent, useEffect } from 'react';
 import axios from 'axios';
 
 interface MongoUsers {
@@ -27,8 +27,7 @@ function Page() {
   const [passwordSuccess, setPasswordSuccess] = useState(false);
 
   const [name, setName] = useState('');
-  const [dateOfBirth, setDateOfBirth] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [consultingVet, setConsultingVet] = useState<boolean>(false);
 
   const [twoFactorAuth, setTwoFactorAuth] = useState(false);
 
@@ -36,6 +35,28 @@ function Page() {
     email: false
   });
   const [notificationFrequency, setNotificationFrequency] = useState('immediate');
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userEmail = 'test@tester.com'; // Replace with the actual user's email or user ID
+  
+        // Fetch the user from MongoDB
+        const response = await axios.get<MongoUsers[]>('http://127.0.0.1:5000/api/mongo_users');
+        const user = response.data.find((user) => user.email === userEmail);
+  
+        if (user) {
+          setName(user.user_name || '');
+          setConsultingVet(user.consulting_vet);
+          // Set other user data fields
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+  
+    fetchUserData();
+  }, []);
 
   const handleTabChange = (tab: Tab) => {
     setActiveTab(tab);
@@ -127,14 +148,6 @@ function Page() {
     }
   };
 
-  const handleProfileUpdate = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // TODO: Profile
-    console.log('Name:', name);
-    console.log('Date of Birth:', dateOfBirth);
-    console.log('Phone Number:', phoneNumber);
-  };
-
   const handleSecurityUpdate = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // TODO: 2FA
@@ -211,54 +224,15 @@ function Page() {
           <div className="p-6">
             {activeTab === 'Profile' && (
               <div>
-                <h2 className="text-xl font-bold mb-4">Profile Settings</h2>
-                <form onSubmit={handleProfileUpdate}>
+                <h2 className="text-xl font-bold mb-4">Profile Information</h2>
                   <div className="mb-4">
-                    <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      required
-                    />
+                    <label className="block text-gray-700 font-bold mb-2">Username</label>
+                    <p className="text-gray-600">{name}</p>
                   </div>
                   <div className="mb-4">
-                    <label htmlFor="dateOfBirth" className="block text-gray-700 font-bold mb-2">
-                      Date of Birth
-                    </label>
-                    <input
-                      type="date"
-                      id="dateOfBirth"
-                      className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
-                      value={dateOfBirth}
-                      onChange={(e) => setDateOfBirth(e.target.value)}
-                      required
-                    />
+                    <label className="block text-gray-700 font-bold mb-2">Consulting Vet</label>
+                    <p className="text-gray-600">{consultingVet ? 'Yes' : 'No'}</p>
                   </div>
-                  <div className="mb-4">
-                    <label htmlFor="phoneNumber" className="block text-gray-700 font-bold mb-2">
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      id="phoneNumber"
-                      className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
-                      value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-                  >
-                    Save Changes
-                  </button>
-                </form>
               </div>
             )}
             {activeTab === 'Password' && (
