@@ -15,7 +15,7 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, onSub
   const handleAnswerChange = (index: number, value: string) => {
     setAnswers(prevAnswers => {
       const newAnswers = [...prevAnswers];
-      const currentAnswers = newAnswers[index] || [];
+      const currentAnswers = newAnswers[index] ?? [];
       
       if (currentAnswers.includes(value)) {
         newAnswers[index] = currentAnswers.filter((answer) => answer !== value);
