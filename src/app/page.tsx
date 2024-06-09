@@ -44,7 +44,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsModalOpen(true);
-    }, 5000); // 5 seconds delay
+    }, 1000); // 5 seconds delay
 
     return () => clearTimeout(timer); // Cleanup timer on component unmount
   }, []);
