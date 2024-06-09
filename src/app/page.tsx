@@ -1,76 +1,49 @@
-"use client";
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+"use client"
+import React from 'react';
+import HeroSection from "~/app/_components/hero-section";
+import {Article} from "~/types/type";
+import ArticleArea from "~/app/_components/articleArea";
+import CTA from './_components/CTA';
+import Testimonial from './_components/testimonial';
 
-interface DimUser {
-  AuditCreateDateTime: string;
-  AuditJobID: number;
-  AuditModifyFlag: string;
-  AuditSourceCode: string | null;
-  AuditUpdateDateTime: string;
-  ClinicID: number;
-  ConsultingVet: boolean;
-  ContactMobileNoCode: string | null;
-  ContactPhoneNoCode: string | null;
-  Deactivated: boolean;
-  DefaultClinicCode: string | null;
-  EmailAddressString: string | null;
-  EmployeeNoCode: string | null;
-  LicenceAgreementDate: string | null;
-  LicenceNoCode: string | null;
-  SiteID: number;
-  SiteNumber: number;
-  SourceSystemCode: string;
-  UserCode: string | null;
-  UserID: number;
-  UserName: string | null;
-  UserNumber: number;
+
+
+const articles: Article[] = [
+  {
+    id: 1,
+    title: 'Leveraging Intelligent Data Analysis for Veterinary Excellence with VetIQ',
+    summary: 'VetIQ by Curious Cat transforms veterinary practice management with smart data analysis, providing actionable insights for growth and operational excellence. Make informed decisions to improve clinical services and client satisfaction.',
+  },
+  {
+    id: 2,
+    title: 'Advanced Analytics Transcending Traditional Approaches',
+    summary: 'VetIQ streamlines data analysis in veterinary practices, replacing manual efforts with a cutting-edge analytics engine. Veterinarians gain intuitive insights, enabling a shift from reactive to proactive strategies for growth and efficiency.',
+  },
+    {
+      id: 3,
+      title: 'Client Engagement',
+      summary: 'VetIQ enhances client understanding by offering insights into loyalty, acquisition, and retention. Identify opportunities for better engagement and satisfaction.',
+    },
+    {
+      id: 4,
+      title: 'Empowering Veterinarians with Data-Driven Decisions',
+      summary: 'VetIQ empowers veterinarians with actionable insights for informed business decisions. Its advanced analytics identify opportunities and areas for improvement, from drug inventories to pricing and patient care protocols.',
+    },
+    {
+      id: 5,
+      title: 'Business Performance',
+      summary: 'VetIQ optimizes business performance with insights on finances, operations, and growth. Identify opportunities for improvement and achieve your goals.',
+    }
+];
+export default function Home() {
+    return (
+        <main>
+          <HeroSection />
+          <ArticleArea articles={articles}/>
+          <CTA />
+          <Testimonial />
+        </main>
+    );
+
 }
 
-const Home = () => {
-  const [data, setData] = useState<DimUser[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get<DimUser[]>('http://127.0.0.1:5000/api/users');
-        setData(response.data);
-        setLoading(false);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          setError(error.message);
-        } else if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError('An unknown error occurred');
-        }
-        setLoading(false);
-      }
-    };
-
-    fetchData().catch(console.error); // Ensure promises are handled
-  }, []);
-
-  // if (loading) {
-  //   return <p>Loading...</p>;
-  // }
-
-  // if (error) {
-  //   return <p>Error: {error}</p>;
-  // }
-
-  return (
-    <div>
-      {/* <h1>Users</h1>
-      <ul>
-        {data.map((user) => (
-          <li key={user.UserID}>{user.UserName}</li>
-        ))}
-      </ul> */}
-    </div>
-  );
-};
-
-export default Home;
