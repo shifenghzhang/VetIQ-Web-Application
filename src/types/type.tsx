@@ -5,3 +5,10 @@ export type AppNavItem = {
     submenu?: boolean;
     subMenuItems?: AppNavItem[];
 };
+
+export type Article = {
+    id: number;
+    title: string;
+    summary: string | string[];
+};
+
