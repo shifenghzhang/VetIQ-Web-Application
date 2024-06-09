@@ -6,29 +6,33 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 interface CustomModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
-  onSubmit: (answers: string[][]) => void;
+  onSubmit: (answers: (string | string[])[]) => void;
 }
 
 const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, onSubmit }) => {
-  const [answers, setAnswers] = useState<string[][]>([[], [], []]); // Assuming 3 questions
+  const [answers, setAnswers] = useState<(string | string[])[]>(['', '', '']); // Assuming 3 questions
 
   const handleAnswerChange = (index: number, value: string) => {
     setAnswers(prevAnswers => {
       const newAnswers = [...prevAnswers];
-      const currentAnswers = newAnswers[index] ?? [];
-      
-      if (currentAnswers.includes(value)) {
-        newAnswers[index] = currentAnswers.filter((answer) => answer !== value);
+      if (index === 2) {
+        // For the radio button question, store the single selected value
+        newAnswers[index] = value;
       } else {
-        newAnswers[index] = [...currentAnswers, value];
+        const currentAnswers = newAnswers[index] as string[];
+        if (currentAnswers.includes(value)) {
+          newAnswers[index] = currentAnswers.filter((answer) => answer !== value);
+        } else {
+          newAnswers[index] = [...currentAnswers, value];
+        }
       }
-      
       return newAnswers;
     });
   };
 
   const handleSubmit = () => {
     onSubmit(answers);
+    console.log(answers);
     onRequestClose();
   };
 
@@ -48,11 +52,11 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, onSub
           bottom: 'auto',
           marginRight: '-50%',
           transform: 'translate(-50%, -50%)',
-          border: 'none', // Remove the default border
+          border: 'none',
           padding: '0',
         },
       }}
-      className="fixed bg-white shadow-md flex flex-col justify-center items-center rounded-lg p-8 max-w-md w-full outline-none" // Add outline-none class
+      className="fixed bg-white shadow-md flex flex-col justify-center items-center rounded-lg p-8 max-w-md w-full outline-none"
     >
       <button
         className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-2xl px-2 focus:outline-none"
@@ -66,12 +70,13 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, onSub
           <li
             style={{
               backgroundColor: isSelected ? '#000' : '#ccc',
-              width: '30px',
-              height: '4px',
-              borderRadius: '2px',
-              margin: '0 4px',
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              margin: '0 2px',
               cursor: 'pointer',
               display: 'inline-block',
+              position: 'relative',
             }}
             onClick={onClickHandler}
             onKeyDown={onClickHandler}
@@ -81,10 +86,11 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, onSub
             aria-label={`Slide ${index + 1}`}
           />
         )}
+        className="w-full"
       >
         <div className="text-left px-6 mt-2 text-sm">
           <p className="mb-4 font-semibold">What types of animals does your practice primarily serve? (Select all that apply)</p>
-          <div className="space-y-2">
+          <div className="space-y-2 ml-4">
             <label className="block">
               <input
                 type="checkbox"
@@ -133,7 +139,7 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, onSub
         </div>
         <div className="text-left px-6 mt-2 text-sm">
           <p className="mb-4 font-semibold">Which of the following technologies do you currently use in your practice? (Select all that apply)</p>
-          <div className="space-y-2">
+          <div className="space-y-2 ml-4">
             <label className="block">
               <input
                 type="checkbox"
@@ -182,13 +188,13 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, onSub
         </div>
         <div className="text-left px-6 mt-2 text-sm">
           <p className="mb-4 font-semibold">How frequently do you use data and analytics to make decisions in your practice?</p>
-          <div className="space-y-2">
+          <div className="space-y-2 ml-4">
             <label className="block">
               <input
-                type="checkbox"
+                type="radio"
                 name="question3"
                 value="Daily"
-                checked={answers[2]?.includes('Daily') ?? false}
+                checked={answers[2] === 'Daily'}
                 onChange={(e) => handleAnswerChange(2, e.target.value)}
                 className="mr-2"
               />
@@ -196,10 +202,10 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, onSub
             </label>
             <label className="block">
               <input
-                type="checkbox"
+                type="radio"
                 name="question3"
                 value="Weekly"
-                checked={answers[2]?.includes('Weekly') ?? false}
+                checked={answers[2] === 'Weekly'}
                 onChange={(e) => handleAnswerChange(2, e.target.value)}
                 className="mr-2"
               />
@@ -207,10 +213,10 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, onSub
             </label>
             <label className="block">
               <input
-                type="checkbox"
+                type="radio"
                 name="question3"
                 value="Monthly"
-                checked={answers[2]?.includes('Monthly') ?? false}
+                checked={answers[2] === 'Monthly'}
                 onChange={(e) => handleAnswerChange(2, e.target.value)}
                 className="mr-2"
               />
@@ -218,10 +224,10 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, onSub
             </label>
             <label className="block">
               <input
-                type="checkbox"
+                type="radio"
                 name="question3"
                 value="Rarely"
-                checked={answers[2]?.includes('Rarely') ?? false}
+                checked={answers[2] === 'Rarely'}
                 onChange={(e) => handleAnswerChange(2, e.target.value)}
                 className="mr-2"
               />
@@ -229,24 +235,78 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, onSub
             </label>
             <label className="block">
               <input
-                type="checkbox"
+                type="radio"
                 name="question3"
                 value="Never"
-                checked={answers[2]?.includes('Never') ?? false}
+                checked={answers[2] === 'Never'}
                 onChange={(e) => handleAnswerChange(2, e.target.value)}
                 className="mr-2"
               />
               Never
             </label>
+          </div>                    
+        </div>
+        <div className="text-left px-6 mt-2 mb-6 text-sm">
+          <p className="mb-4 font-semibold">How many veterinarians are currently working in your practice?</p>
+          <div className="space-y-2 ml-4">
+            <label className="block">
+              <input
+                type="radio"
+                name="question3"
+                value="1-5"
+                checked={answers[2] === '1-5'}
+                onChange={(e) => handleAnswerChange(2, e.target.value)}
+                className="mr-2"
+              />
+              1-5
+            </label>
+            <label className="block">
+              <input
+                type="radio"
+                name="question3"
+                value="6-10"
+                checked={answers[2] === '6-10'}
+                onChange={(e) => handleAnswerChange(2, e.target.value)}
+                className="mr-2"
+              />
+              6-10
+            </label>
+            <label className="block">
+              <input
+                type="radio"
+                name="question3"
+                value="11-20"
+                checked={answers[2] === '11-20'}
+                onChange={(e) => handleAnswerChange(2, e.target.value)}
+                className="mr-2"
+              />
+              11-20
+            </label>
+            <label className="block">
+              <input
+                type="radio"
+                name="question3"
+                value="More than 20"
+                checked={answers[2] === 'More than 20'}
+                onChange={(e) => handleAnswerChange(2, e.target.value)}
+                className="mr-2"
+              />
+              More than 20
+            </label>
           </div>
-          <button
-            onClick={handleSubmit}
-            className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-          >
-            Submit
-          </button>
+          <div className="flex justify-center">
+            <button
+              onClick={handleSubmit}
+              className="bg-customSkyBlue mb-3 text-black font-semibold py-2 px-4 rounded bg-opacity-70 hover:bg-opacity-100"
+            >
+              Submit
+            </button>
+          </div>
+          
+          
         </div>
       </Carousel>
+      
     </Modal>
   );
 };

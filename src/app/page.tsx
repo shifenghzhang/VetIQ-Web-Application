@@ -53,7 +53,7 @@ export default function Home() {
     setIsModalOpen(false);
   };
 
-  const handleModalSubmit = (answer: string[][]) => {
+  const handleModalSubmit = (answers: (string | string[])[]) => {
 
     setIsModalOpen(false);
   };
