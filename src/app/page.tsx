@@ -1,4 +1,3 @@
-// pages/app/home/page.tsx
 "use client"
 import React from 'react';
 import HeroSection from "~/app/_components/hero-section";
@@ -47,3 +46,4 @@ export default function Home() {
     );
 
 }
+
