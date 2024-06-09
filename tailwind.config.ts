@@ -10,7 +10,7 @@ export default {
       },
       colors: {
         customSkyBlue: 'rgb(230, 237, 240)',
-        customDarkBlue: 'rgb(0, 146, 226),',
+        customDarkBlue: 'rgb(0, 146, 226)',
         customBlack: 'rgb(50, 48, 47)'
       }
     },

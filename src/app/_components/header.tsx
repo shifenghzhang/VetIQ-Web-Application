@@ -20,6 +20,7 @@ const Header = () => {
       const word = pathname.substring(pathname.lastIndexOf("/") + 1);
       return word.charAt(0).toUpperCase() + word.slice(1);
     }
+
   };
 
   const { isCollapsed } = useSidebar();
@@ -53,3 +54,4 @@ const Header = () => {
 };
 
 export default Header;
+
