@@ -24,7 +24,7 @@ const PieChart_DataPoint1: React.FC<PieChartProps> = ({ data }) => {
       d3.select(svgRef.current).selectAll('*').remove(); // Clear previous chart
 
       const svg = d3.select(svgRef.current)
-        .attr('width', width)
+        .attr('width', width + 200) // Add extra width for legend
         .attr('height', height)
         .append('g')
         .attr('transform', `translate(${width / 2},${height / 2})`);
@@ -44,21 +44,27 @@ const PieChart_DataPoint1: React.FC<PieChartProps> = ({ data }) => {
         .attr('stroke', 'white')
         .style('stroke-width', '2px');
 
-      const label = d3.arc<d3.PieArcDatum<{ TransactionTypeName: string; PercentageUsage: number; TotalUsage: number }>>()
-        .innerRadius(radius * 0.7)
-        .outerRadius(radius * 0.7);
+      // Adding legend
+      const legend = d3.select(svgRef.current)
+        .append('g')
+        .attr('transform', `translate(${width}, ${20})`); // Position the legend
 
-      svg.selectAll('text')
-        .data(pie)
+      legend.selectAll('rect')
+        .data(data)
+        .enter().append('rect')
+        .attr('x', 0)
+        .attr('y', (d, i) => i * 20)
+        .attr('width', 18)
+        .attr('height', 18)
+        .style('fill', d => color(d.TransactionTypeName));
+
+      legend.selectAll('text')
+        .data(data)
         .enter().append('text')
-        .attr('transform', d => `translate(${label.centroid(d)})`)
-        .attr('dy', '0.35em')
-        .text(d => {
-          const percentage = (d.data.PercentageUsage * 1).toFixed(2);
-          return d.data.PercentageUsage >= 2 ? `${d.data.TransactionTypeName} (${percentage}%)` : ''; // Hides labels with less than 5%
-        })
-        .style('text-anchor', 'middle')
-        .style('font-size', '12px');
+        .attr('x', 24)
+        .attr('y', (d, i) => i * 20 + 9)
+        .attr('dy', '.35em')
+        .text(d => `${d.TransactionTypeName} (${(d.PercentageUsage * 1).toFixed(2)}%)`);
     };
 
     renderChart();
@@ -71,8 +77,3 @@ const PieChart_DataPoint1: React.FC<PieChartProps> = ({ data }) => {
 };
 
 export default PieChart_DataPoint1;
-
-
-
-
-
