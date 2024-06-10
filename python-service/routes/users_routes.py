@@ -45,3 +45,23 @@ def delete_mongo_user(user_id):
             return jsonify({"message": "User not found."}), 404
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+
+@user_bp.route('/add_engagement_survey', methods=['POST'])
+def add_engagement_survey():
+    try:
+        data = request.json
+        user_id = data.get('user_id')
+        new_data = data.get('new_data')
+
+        result = users_collection.update_one(
+            {"user_id": int(user_id)},
+            {"$set": {"engagement_survey": new_data}}
+        )
+
+        if result.matched_count == 1:
+            return jsonify({"message": "Survey data added successfully."})
+        else:
+            return jsonify({"message": "User not found."}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
