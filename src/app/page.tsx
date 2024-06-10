@@ -8,7 +8,7 @@ import Testimonial from './_components/testimonial';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import CustomModal from './_components/customModal';
-
+import { useAuth } from './_contexts/authProvider';
 
 const articles: Article[] = [
   {
@@ -40,11 +40,12 @@ const articles: Article[] = [
 export default function Home() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const {user} = useAuth();
   
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsModalOpen(true);
-    }, 1000); // 5 seconds delay
+    }, 3000); // 5 seconds delay
 
     return () => clearTimeout(timer); // Cleanup timer on component unmount
   }, []);
@@ -60,15 +61,19 @@ export default function Home() {
   
     return (
         <main>
+
           <HeroSection />
           <ArticleArea articles={articles}/>
           <CTA />
           <Testimonial />
-          <CustomModal
-            isOpen={isModalOpen}
-            onRequestClose={handleModalClose}
-            onSubmit={handleModalSubmit}
-          />
+          {user && 
+            <CustomModal
+              isOpen={isModalOpen}
+              onRequestClose={handleModalClose}
+              onSubmit={handleModalSubmit}
+            />          
+          }
+          
         </main>
     );
 

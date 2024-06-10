@@ -10,13 +10,13 @@ interface CustomModalProps {
 }
 
 const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, onSubmit }) => {
-  const [answers, setAnswers] = useState<(string | string[])[]>(['', '', '']); // Assuming 3 questions
+  const [answers, setAnswers] = useState<(string | string[])[]>(['', '', '', '']);
 
   const handleAnswerChange = (index: number, value: string) => {
     setAnswers(prevAnswers => {
       const newAnswers = [...prevAnswers];
-      if (index === 2) {
-        // For the radio button question, store the single selected value
+      if (index === 2 || index === 3) {
+        // For the radio button questions, store the single selected value
         newAnswers[index] = value;
       } else {
         const currentAnswers = newAnswers[index] as string[];
@@ -43,7 +43,7 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, onSub
       contentLabel="Question Modal"
       style={{
         overlay: {
-          backgroundColor: 'rgba(0, 0, 0, 0.5)', // Set background opacity here
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
         },
         content: {
           top: '50%',
@@ -54,9 +54,12 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, onSub
           transform: 'translate(-50%, -50%)',
           border: 'none',
           padding: '0',
+          maxHeight: '90vh',
+          overflow: 'auto',
+          width: '500px',
         },
       }}
-      className="fixed bg-white shadow-md flex flex-col justify-center items-center rounded-lg p-8 max-w-md w-full outline-none"
+      className="fixed bg-white shadow-md flex flex-col justify-center items-center rounded-lg p-8 outline-none"
     >
       <button
         className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-2xl px-2 focus:outline-none"
@@ -65,7 +68,12 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, onSub
         &times;
       </button>
       <h2 className="text-2xl mb-4 mt-10 font-semibold text-white bg-customDarkBlue p-4 rounded-md">We have some questions for you!</h2>
-      <Carousel showArrows={false} showThumbs={false} showStatus={true} emulateTouch={true} swipeScrollTolerance={50}
+      <Carousel
+        showArrows={false}
+        showThumbs={false}
+        showStatus={true}
+        emulateTouch={true}
+        swipeScrollTolerance={50}
         renderIndicator={(onClickHandler: (e: React.MouseEvent<HTMLLIElement> | React.KeyboardEvent<HTMLLIElement>) => void, isSelected: boolean, index: number) => (
           <li
             style={{
@@ -252,10 +260,10 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, onSub
             <label className="block">
               <input
                 type="radio"
-                name="question3"
+                name="question4"
                 value="1-5"
-                checked={answers[2] === '1-5'}
-                onChange={(e) => handleAnswerChange(2, e.target.value)}
+                checked={answers[3] === '1-5'}
+                onChange={(e) => handleAnswerChange(3, e.target.value)}
                 className="mr-2"
               />
               1-5
@@ -263,10 +271,10 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, onSub
             <label className="block">
               <input
                 type="radio"
-                name="question3"
+                name="question4"
                 value="6-10"
-                checked={answers[2] === '6-10'}
-                onChange={(e) => handleAnswerChange(2, e.target.value)}
+                checked={answers[3] === '6-10'}
+                onChange={(e) => handleAnswerChange(3, e.target.value)}
                 className="mr-2"
               />
               6-10
@@ -274,10 +282,10 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, onSub
             <label className="block">
               <input
                 type="radio"
-                name="question3"
+                name="question4"
                 value="11-20"
-                checked={answers[2] === '11-20'}
-                onChange={(e) => handleAnswerChange(2, e.target.value)}
+                checked={answers[3] === '11-20'}
+                onChange={(e) => handleAnswerChange(3, e.target.value)}
                 className="mr-2"
               />
               11-20
@@ -285,10 +293,10 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, onSub
             <label className="block">
               <input
                 type="radio"
-                name="question3"
+                name="question4"
                 value="More than 20"
-                checked={answers[2] === 'More than 20'}
-                onChange={(e) => handleAnswerChange(2, e.target.value)}
+                checked={answers[3] === 'More than 20'}
+                onChange={(e) => handleAnswerChange(3, e.target.value)}
                 className="mr-2"
               />
               More than 20
@@ -302,11 +310,8 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, onSub
               Submit
             </button>
           </div>
-          
-          
         </div>
       </Carousel>
-      
     </Modal>
   );
 };
