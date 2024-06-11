@@ -52,26 +52,50 @@ const articles: Article[] = [
 export default function Home() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hasCheckedSurveyStatus, setHasCheckedSurveyStatus] = useState(false);
   const {user} = useAuth();
   
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsModalOpen(true);
-    }, 3000);
+    const checkSurveyStatus = async () => {
+      try {
+        if (!user) {
+          return;
+        }        
+        const response = await axios.get<MongoUsers[]>('http://127.0.0.1:5000/api/mongo_users');
+        const currentUser = response.data.find(mongo_user => mongo_user.user_id === user.user_id);
+        
+        if (currentUser && !currentUser.engagement_survey) {
+          console.log("Survey not taken yet. Setting timer to show modal.");
+          const timer = setTimeout(() => {
+            setIsModalOpen(true);
+          }, 2000);
 
-    return () => clearTimeout(timer); // Cleanup timer on component unmount
-  }, []);
+          return () => clearTimeout(timer);
+        } else {
+        }
+      } catch (error) {
+        console.error("Error checking survey status:", error);
+      } finally {
+        setHasCheckedSurveyStatus(true);
+      }
+    };
+
+    if (user && !hasCheckedSurveyStatus) {
+      void checkSurveyStatus();
+    }
+  }, [user, hasCheckedSurveyStatus]);
 
   const handleModalClose = () => {
     setIsModalOpen(false);
   };
 
   const handleModalSubmit = async (answers: (string | string[])[]) => {
+    console.log("Submitting survey data:", answers);
 
     try {
       const postResponse = await axios.post<PostResponse>('http://127.0.0.1:5000/api/add_engagement_survey', {
         user_id: user?.user_id,
-        engagement_survey: answers
+        new_data: answers
       });
 
       if (postResponse.status === 200) {
