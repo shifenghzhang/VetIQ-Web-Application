@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 15,
+            "activePatchIndex": 19,
             "patches": [
                 {
                     "date": 1716850865085,
@@ -68,6 +68,22 @@
                 {
                     "date": 1717466906282,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,9 @@\n from flask import Flask\r\n from flask_cors import CORS\r\n from routes.users_routes import user_bp\r\n from routes.serviceData_routes import serviceData_bp\r\n-from routes.patientData_routes import serviceData_bp\r\n+from routes.patientData_routes import patientData_bp\r\n \r\n app = Flask(__name__)\r\n CORS(app)\r\n \r\n@@ -17,24 +17,4 @@\n     return \"Welcome to the Flask API!\"\r\n \r\n if __name__ == '__main__':\r\n     app.run(host='0.0.0.0', port=5000)\r\n-from flask import Flask\r\n-from flask_cors import CORS\r\n-from routes.users_routes import user_bp\r\n-from routes.serviceData_routes import serviceData_bp\r\n-from routes.serviceData_routes import serviceData_bp\r\n-\r\n-app = Flask(__name__)\r\n-CORS(app)\r\n-\r\n-# Register blueprints\r\n-app.register_blueprint(user_bp, url_prefix='/api')\r\n-app.register_blueprint(serviceData_bp, url_prefix='/api')\r\n-app.register_blueprint(patientData_bp, url_prefix='/api')\r\n-\r\n-@app.route('/')\r\n-def index():\r\n-    return \"Welcome to the Flask API!\"\r\n-\r\n-if __name__ == '__main__':\r\n-    app.run(host='0.0.0.0', port=5000)\r\n"
+                },
+                {
+                    "date": 1718085353910,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,8 +8,9 @@\n CORS(app)\r\n \r\n # Register blueprints\r\n app.register_blueprint(user_bp, url_prefix='/api')\r\n+from routes.patientData_routes import patientData_bp\r\n app.register_blueprint(serviceData_bp, url_prefix='/api')\r\n app.register_blueprint(patientData_bp, url_prefix='/api')\r\n \r\n @app.route('/')\r\n"
+                },
+                {
+                    "date": 1718085359974,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,22 @@\n+from flask import Flask\r\n+from flask_cors import CORS\r\n+from routes.users_routes import user_bp\r\n+from routes.patientData_routes import patientData_bp\r\n+from routes.serviceData_routes import serviceData_bp\r\n+from routes.patientData_routes import patientData_bp\r\n+\r\n+app = Flask(__name__)\r\n+CORS(app)\r\n+\r\n+# Register blueprints\r\n+app.register_blueprint(user_bp, url_prefix='/api')\r\n+\r\n+app.register_blueprint(serviceData_bp, url_prefix='/api')\r\n+app.register_blueprint(patientData_bp, url_prefix='/api')\r\n+\r\n+@app.route('/')\r\n+def index():\r\n+    return \"Welcome to the Flask API!\"\r\n+\r\n+if __name__ == '__main__':\r\n+    app.run(host='0.0.0.0', port=5000)\r\n"
+                },
+                {
+                    "date": 1718085374273,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,22 @@\n+from flask import Flask\r\n+from flask_cors import CORS\r\n+from routes.users_routes import user_bp\r\n+from routes.getOption_routes import getOption_bp\r\n+from routes.serviceData_routes import serviceData_bp\r\n+from routes.patientData_routes import patientData_bp\r\n+\r\n+app = Flask(__name__)\r\n+CORS(app)\r\n+\r\n+# Register blueprints\r\n+app.register_blueprint(user_bp, url_prefix='/api')\r\n+\r\n+app.register_blueprint(serviceData_bp, url_prefix='/api')\r\n+app.register_blueprint(patientData_bp, url_prefix='/api')\r\n+\r\n+@app.route('/')\r\n+def index():\r\n+    return \"Welcome to the Flask API!\"\r\n+\r\n+if __name__ == '__main__':\r\n+    app.run(host='0.0.0.0', port=5000)\r\n"
+                },
+                {
+                    "date": 1718085380713,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,22 @@\n+from flask import Flask\r\n+from flask_cors import CORS\r\n+from routes.users_routes import user_bp\r\n+from routes.getOption_routes import getOption_bp\r\n+from routes.serviceData_routes import serviceData_bp\r\n+from routes.patientData_routes import patientData_bp\r\n+\r\n+app = Flask(__name__)\r\n+CORS(app)\r\n+\r\n+# Register blueprints\r\n+app.register_blueprint(user_bp, url_prefix='/api')\r\n+app.register_blueprint(, url_prefix='/api')\r\n+app.register_blueprint(serviceData_bp, url_prefix='/api')\r\n+app.register_blueprint(patientData_bp, url_prefix='/api')\r\n+\r\n+@app.route('/')\r\n+def index():\r\n+    return \"Welcome to the Flask API!\"\r\n+\r\n+if __name__ == '__main__':\r\n+    app.run(host='0.0.0.0', port=5000)\r\n"
                 }
             ],
             "date": 1716850865085,

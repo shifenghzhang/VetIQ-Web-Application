@@ -1,0 +1,18 @@
+{
+    "sourceFile": "python-service/routes/getOption_routes.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1718085238329,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1718085238329,
+            "name": "Commit-0",
+            "content": "from flask import Blueprint, jsonify, request\r\nfrom db_config import get_db_connection\r\n\r\ngetOption_bp = Blueprint('getOption_bp', __name__)\r\n\r\ndef get_columns_with_names(conn, substrings, table_name=None):\r\n    \"\"\"Function to get columns with specified substrings.\"\"\"\r\n    cursor = conn.cursor()\r\n    if table_name:\r\n        cursor.execute(f\"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{table_name}'\")\r\n    else:\r\n        cursor.execute(\"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS\")\r\n    columns = [row[0] for row in cursor.fetchall()]\r\n    matching_columns = [col for col in columns if any(substring in col.lower() for substring in substrings)]\r\n    return matching_columns\r\n\r\n# Function to extract year values from date strings\r\ndef extract_year_from_date(date_string):\r\n    try:\r\n        # Assuming the date format is consistent, you can extract the year using string manipulation\r\n        year = date_string.split('-')[0]  # Assuming the date format is YYYY-MM-DD\r\n        return year\r\n    except IndexError:\r\n        return None  # Return None if the date format is not as expected or if an error occurs\r\n\r\n# Function to generate a range of years\r\ndef generate_year_range(start_year, end_year):\r\n    return [str(year) for year in range(start_year, end_year + 1)]\r\n\r\n\r\n# Modify the get_options route to use the generated year range\r\n@getOption_bp.route('/getOption/options', methods=['GET'])\r\ndef get_options():\r\n    option_type = request.args.get('type')\r\n    conn = get_db_connection()\r\n\r\n    if option_type == 'clinic':\r\n        cursor = conn.cursor()\r\n        cursor.execute(\"SELECT DISTINCT Clinic_ID, Clinic_Name FROM dbo.DimClinic\")\r\n        options = [{'value': row[0], 'label': row[1]} for row in cursor.fetchall()]\r\n    elif option_type == 'year':\r\n        # Generate a range of years\r\n        start_year = 2020  # Modify this according to your requirement\r\n        end_year = 2024   # Modify this according to your requirement\r\n        year_range = generate_year_range(start_year, end_year)\r\n        options = [{'value': year, 'label': year} for year in year_range]\r\n    elif option_type == 'quarter':\r\n        options = [{'value': q, 'label': f'Q{q}'} for q in range(1, 5)]\r\n    else:\r\n        options = []\r\n\r\n    conn.close()\r\n    return jsonify(options)\r\n\r\n\r\n@getOption_bp.route('/getOption/data', methods=['GET'])\r\ndef get_data():\r\n    clinic = request.args.get('clinic')\r\n    year = request.args.get('year')\r\n    quarter = request.args.get('quarter')\r\n\r\n    conn = get_db_connection()\r\n    cursor = conn.cursor()\r\n\r\n    # Base query\r\n    query = \"SELECT * FROM your_table WHERE 1=1\"\r\n\r\n    # Check if clinic is provided\r\n    if clinic:\r\n        query += \" AND clinic_id = :clinic\"\r\n    # Check if year is provided\r\n    if year:\r\n        query += \" AND year_column = :year\"\r\n    # Check if quarter is provided\r\n    if quarter:\r\n        query += \" AND quarter_column = :quarter\"\r\n\r\n"
+        }
+    ]
+}

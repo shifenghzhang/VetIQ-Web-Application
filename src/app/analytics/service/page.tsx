@@ -5,6 +5,7 @@ import {LoadPieChart_DataPoint1, LoadBarChart_DataPoint2, LoadPieChart_DataPoint
           LoadServiceRevenue, LoadServiceRevenueWOConsultation, LoadTopServices} from './LoadData'; // Import charts or other data
 
 function Page() {
+
   return (
     <div className="dashboard-container">
       <div className="flex items-center mb-4 w-full max-w-xl">
