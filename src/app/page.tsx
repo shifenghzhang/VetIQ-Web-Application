@@ -1,5 +1,5 @@
 "use client"
-import React from 'react';
+import React, { FormEvent } from 'react';
 import HeroSection from "~/app/_components/hero-section";
 import {Article} from "~/types/type";
 import ArticleArea from "~/app/_components/articleArea";
@@ -10,6 +10,18 @@ import axios from 'axios';
 import CustomModal from './_components/customModal';
 import { useAuth } from './_contexts/authProvider';
 
+interface MongoUsers {
+  consulting_vet: boolean;
+  email: string | null;
+  password: string;
+  site_id: number;
+  user_id: number;
+  user_name: string | null;
+  engagement_survey?: (string | string[])[]; // Optional property
+}
+interface PostResponse {
+  message: string;
+}
 const articles: Article[] = [
   {
     id: 1,
@@ -45,7 +57,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsModalOpen(true);
-    }, 3000); // 5 seconds delay
+    }, 3000);
 
     return () => clearTimeout(timer); // Cleanup timer on component unmount
   }, []);
@@ -54,7 +66,24 @@ export default function Home() {
     setIsModalOpen(false);
   };
 
-  const handleModalSubmit = (answers: (string | string[])[]) => {
+  const handleModalSubmit = async (answers: (string | string[])[]) => {
+
+    try {
+      const postResponse = await axios.post<PostResponse>('http://127.0.0.1:5000/api/add_engagement_survey', {
+        user_id: user?.user_id,
+        engagement_survey: answers
+      });
+
+      if (postResponse.status === 200) {
+        console.log("Survey data submitted successfully: ", postResponse.data)
+      }
+      else {
+        console.log("Failed to submit survey data");
+      }      
+    }
+    catch(error) {
+      console.error("Error submitting survey data:", error);
+    }
 
     setIsModalOpen(false);
   };
@@ -70,7 +99,7 @@ export default function Home() {
             <CustomModal
               isOpen={isModalOpen}
               onRequestClose={handleModalClose}
-              onSubmit={handleModalSubmit}
+              onSubmit={(answers) => handleModalSubmit(answers)}
             />          
           }
           

@@ -304,7 +304,10 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, onSub
           </div>
           <div className="flex justify-center">
             <button
-              onClick={handleSubmit}
+              onClick={(e) => {
+                e.preventDefault();
+                handleSubmit();
+              }}
               className="bg-customSkyBlue mb-3 text-black font-semibold py-2 px-4 rounded bg-opacity-70 hover:bg-opacity-100"
             >
               Submit
