@@ -13,7 +13,7 @@ def get_usage_percentage():
         cursor.execute("""
             SELECT TransactionTypeName, COUNT(*) AS UsageCount
             FROM rmit.FactTransaction_sub
-            WHERE YEAR(TransactionDate) IN (2023, 2024)
+            WHERE ClinicID BETWEEN 3 AND 7
             GROUP BY TransactionTypeName
         """)
         rows = cursor.fetchall()
@@ -44,6 +44,7 @@ def get_transaction_counts():
         cursor.execute("""
             SELECT TransactionTypeName, DATEPART(month, TransactionDate) as Month, COUNT(*) as Count
             FROM rmit.FactTransaction_sub
+            WHERE ClinicID BETWEEN 3 AND 7
             GROUP BY TransactionTypeName, DATEPART(month, TransactionDate)
             ORDER BY Month
         """)
@@ -65,7 +66,7 @@ def get_revenue_total():
         cursor.execute("""
             SELECT SUM(TransactionDisplayAmt) as TotalRevenue 
             FROM rmit.FactTransaction_sub
-            WHERE YEAR(TransactionDate) IN (2023, 2024)
+            WHERE ClinicID BETWEEN 3 AND 7
         """)
         rows = cursor.fetchall()
         columns = [column[0] for column in cursor.description]
@@ -86,8 +87,7 @@ def get_revenue_total_without_consultation():
         cursor.execute("""
             SELECT SUM(TransactionDisplayAmt) as TotalRevenue 
             FROM rmit.FactTransaction_sub
-            WHERE YEAR(TransactionDate) IN (2023, 2024)
-            AND TransactionTypeName != 'Consultation'
+            WHERE TransactionTypeName != 'Consultation' 
         """)
         rows = cursor.fetchall()
         columns = [column[0] for column in cursor.description]
@@ -110,7 +110,7 @@ def get_revenue_percentage():
         cursor.execute("""
             SELECT TransactionTypeName, SUM(TransactionDisplayAmt) as TotalRevenue 
             FROM rmit.FactTransaction_sub
-            WHERE YEAR(TransactionDate) IN (2023, 2024)
+            WHERE ClinicID BETWEEN 3 AND 7
             GROUP BY TransactionTypeName
         """)
         rows = cursor.fetchall()
@@ -140,7 +140,7 @@ def get_top_services():
         cursor.execute("""
             SELECT TOP 10 TransactionTypeName, COUNT(*) as ServiceCount, SUM(TransactionDisplayAmt) as TotalRevenue 
             FROM rmit.FactTransaction_sub
-            WHERE YEAR(TransactionDate) IN (2023, 2024)
+            WHERE ClinicID BETWEEN 3 AND 7
             GROUP BY TransactionTypeName
             ORDER BY TotalRevenue DESC;
         """)
@@ -160,6 +160,7 @@ def get_top_services():
 
     except Exception as e:
         return jsonify({'error': str(e)})
+
 
 
 
