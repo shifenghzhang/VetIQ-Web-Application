@@ -85,6 +85,12 @@ export default function Home() {
     }
   }, [user, hasCheckedSurveyStatus]);
 
+  useEffect(() => {
+    if (user) {
+      setHasCheckedSurveyStatus(false);
+    }
+  }, [user]);
+
   const handleModalClose = () => {
     setIsModalOpen(false);
   };
