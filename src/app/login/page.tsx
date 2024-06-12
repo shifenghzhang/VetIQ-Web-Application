@@ -135,7 +135,7 @@ const LoginCard: React.FC = () => {
         {showForgotPassword && (
           <div>
             <h3 className="text-lg font-bold mb-2">Forgot password?</h3>
-            <p className="text-sm mb-4">No worries, we'll send you reset instructions.</p>
+            <p className="text-sm mb-4">No worries, we&apos;ll send you reset instructions.</p>
             <div className="mb-4">
               <label className="block text-gray-700 font-bold" htmlFor="forgotEmail">
                 Enter your email
