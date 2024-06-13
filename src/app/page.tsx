@@ -45,5 +45,18 @@ export default function Home() {
         </main>
     );
 
+<<<<<<< HEAD
 }
 
+=======
+const Home = () => {
+
+  return (
+    <div>
+      <h1>Home Page</h1>
+    </div>
+  );
+};
+
+export default Home;
+>>>>>>> 57558663ce470057351e80d5065af23b92d43d45

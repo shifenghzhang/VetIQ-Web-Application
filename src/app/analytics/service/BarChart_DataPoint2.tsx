@@ -16,7 +16,7 @@ const BarChart_DataPoint2: React.FC<BarChartProps> = ({ data }) => {
       const containerWidth = containerRef.current.clientWidth;
       const containerHeight = containerRef.current.clientHeight;
 
-      const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+      const margin = { top: 20, right: 30, bottom: 60, left: 40 };
       const width = containerWidth - margin.left - margin.right;
       const height = containerHeight - margin.top - margin.bottom;
 
@@ -38,9 +38,16 @@ const BarChart_DataPoint2: React.FC<BarChartProps> = ({ data }) => {
         .nice()
         .range([height, 0]);
 
+      // Define color scale
+      const color = d3.scaleOrdinal(d3.schemeCategory10);
+
       svg.append('g')
         .attr('transform', `translate(0,${height})`)
-        .call(d3.axisBottom(x));
+        .call(d3.axisBottom(x))
+        .selectAll('text')
+        .attr('transform', 'rotate(45)')
+        .style('text-anchor', 'start')
+        .style('font-size', '12px');
 
       svg.append('g')
         .call(d3.axisLeft(y));
@@ -53,7 +60,8 @@ const BarChart_DataPoint2: React.FC<BarChartProps> = ({ data }) => {
         .attr('y', d => y(d.Count))
         .attr('width', x.bandwidth())
         .attr('height', d => height - y(d.Count))
-        .attr('fill', 'steelblue');
+        .attr('height', d => height - y(d.Count))
+        .attr('fill', d => color(d.TransactionTypeName)); // Apply color scale to bars
     };
 
     renderChart();
