@@ -38,7 +38,7 @@ const LoadPieChart_DataPoint1 = () => {
       }
     };
 
-    fetchData();
+    void fetchData();
   }, []);
 
   if (loading) {
@@ -93,7 +93,7 @@ const LoadBarChart_DataPoint2 = () => {
       }
     };
 
-    fetchData();
+    void fetchData();
   }, []);
 
   if (loading) {
@@ -134,7 +134,7 @@ const LoadServiceRevenue = () => {
       }
     };
 
-    fetchData();
+    void fetchData();
   }, []);
 
   if (loading) {
@@ -181,7 +181,7 @@ const LoadServiceRevenueWOConsultation = () => {
       }
     };
 
-    fetchData();
+    void fetchData();
   }, []);
 
   if (loading) {
@@ -233,7 +233,7 @@ const LoadPieChart_DataPoint3 = () => {
       }
     };
 
-    fetchData();
+    void fetchData();
   }, []);
 
   if (loading) {
@@ -277,7 +277,7 @@ const LoadTopServices = () => {
       }
     };
   
-    fetchData();
+    void fetchData();
   }, []);
   
 
