@@ -76,8 +76,4 @@ const PieChart_DataPoint1: React.FC<PieChartProps> = ({ data }) => {
   return <div ref={containerRef} style={{ width: '100%', height: '100%' }}><svg ref={svgRef} /></div>;
 };
 
-<<<<<<< HEAD
 export default PieChart_DataPoint1;
-=======
-export default PieChart_DataPoint1;
->>>>>>> 57558663ce470057351e80d5065af23b92d43d45
