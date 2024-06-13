@@ -49,7 +49,10 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
     svg.selectAll('text')
       .data(pie)
       .enter().append('text')
-      .attr('transform', d => `translate(${label.centroid(d)})`)
+      .attr('transform', d => {
+        const [x, y] = label.centroid(d);
+        return `translate(${x},${y})`;
+      })
       .attr('dy', '0.35em')
       .text(d => {
         const percentage = (d.data.PercentageContribution * 1).toFixed(2);
