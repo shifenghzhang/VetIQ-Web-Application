@@ -68,8 +68,3 @@ const PieChart_DataPoint1: React.FC<PieChartProps> = ({ data }) => {
 };
 
 export default PieChart_DataPoint1;
-
-
-
-
-

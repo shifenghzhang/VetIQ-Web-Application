@@ -66,4 +66,3 @@ const BarChart_DataPoint2: React.FC<BarChartProps> = ({ data }) => {
 };
 
 export default BarChart_DataPoint2;
-

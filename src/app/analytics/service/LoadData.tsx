@@ -4,42 +4,57 @@ import BarChart_DataPoint2 from './BarChart_DataPoint2';
 import PieChart_DataPoint3 from './PieChart_DataPoint3';
 import PieChart_DataPoint1 from './PieChart_DataPoint1';
 
+// Helper function to build query string
+const buildQueryString = (selectedClinic: number[], selectedYear: number[]) => {
+  let query = '';
+  if (selectedClinic.length > 0) {
+    query += `ClinicID=${selectedClinic.join(',')}&`;
+  }
+  if (selectedYear.length > 0) {
+    query += `Year=${selectedYear.join(',')}&`;
+  }
+  return query.slice(0, -1); // Remove trailing '&'
+};
 
-//Loading Data Point 1
+// Loading Data Point 1
 interface UsagePercentage {
   TransactionTypeName: string;
   PercentageUsage: number;
   TotalUsage: number;
 }
 
-const LoadPieChart_DataPoint1 = () => {
+const LoadPieChart_DataPoint1: React.FC<{ selectedClinic: number[], selectedYear: number[] }> = ({ selectedClinic, selectedYear }) => {
   const [usageData, setUsageData] = useState<UsagePercentage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const response = await axios.get<UsagePercentage[]>('http://127.0.0.1:5000/api/serviceData/usedServicePercentage');
+        const queryString = buildQueryString(selectedClinic, selectedYear);
+        console.log('Fetching data with query string:', queryString);
+        const response = await axios.get<UsagePercentage[]>(`http://127.0.0.1:5000/api/serviceData/usedServicePercentage?${queryString}`);
         const transformedUsageData = response.data.map(item => ({
           TransactionTypeName: item.TransactionTypeName,
           PercentageUsage: item.PercentageUsage,
           TotalUsage: item.TotalUsage
         }));
         setUsageData(transformedUsageData);
-        setLoading(false);
       } catch (err) {
+        console.error('Error fetching data:', err);
         if (axios.isAxiosError(err)) {
           setError(err.message);
         } else {
           setError('An unknown error occurred');
         }
-        setLoading(false);
       }
+      setLoading(false);
     };
 
     void fetchData();
-  }, []);
+  }, [selectedClinic, selectedYear]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -52,49 +67,45 @@ const LoadPieChart_DataPoint1 = () => {
   return <PieChart_DataPoint1 data={usageData} />;
 };
 
-//Loading Data Point 2
+// Loading Data Point 2
 interface ServiceTransaction {
   TransactionTypeName: string;
   Month: number;
   Count: number;
 }
 
-interface RevenuePercentage {
-  TransactionTypeName: string;
-  TotalRevenue: number;
-  PercentageContribution: number;
-}
-
-const LoadBarChart_DataPoint2 = () => {
+const LoadBarChart_DataPoint2: React.FC<{ selectedClinic: number[], selectedYear: number[] }> = ({ selectedClinic, selectedYear }) => {
   const [transactionData, setData] = useState<ServiceTransaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const response = await axios.get<ServiceTransaction[]>('http://127.0.0.1:5000/api/serviceData/transactionServiceCounts');
+        const queryString = buildQueryString(selectedClinic, selectedYear);
+        console.log('Fetching data with query string:', queryString);
+        const response = await axios.get<ServiceTransaction[]>(`http://127.0.0.1:5000/api/serviceData/transactionServiceCounts?${queryString}`);
         const transformedData = response.data.map(item => ({
           TransactionTypeName: item.TransactionTypeName,
           Month: item.Month,
           Count: item.Count
         }));
         setData(transformedData);
-        setLoading(false);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          setError(error.message);
-        } else if (error instanceof Error) {
-          setError(error.message);
+      } catch (err) {
+        console.error('Error fetching data:', err);
+        if (axios.isAxiosError(err)) {
+          setError(err.message);
         } else {
           setError('An unknown error occurred');
         }
-        setLoading(false);
       }
+      setLoading(false);
     };
 
     void fetchData();
-  }, []);
+  }, [selectedClinic, selectedYear]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -113,29 +124,31 @@ interface ServiceRevenue {
   TotalRevenue: number;
 }
 
-const LoadServiceRevenue = () => {
+const LoadServiceRevenue = ({ selectedClinic, selectedYear }: { selectedClinic: number[], selectedYear: number[] }) => {
   const [revenueData, setRevenueData] = useState<ServiceRevenue[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const response = await axios.get<ServiceRevenue[]>('http://127.0.0.1:5000/api/serviceData/totalRevenueService');
+        const queryString = buildQueryString(selectedClinic, selectedYear);
+        const response = await axios.get<ServiceRevenue[]>(`http://127.0.0.1:5000/api/serviceData/totalRevenueService?${queryString}`);
         setRevenueData(response.data);
-        setLoading(false);
       } catch (err) {
         if (axios.isAxiosError(err)) {
           setError(err.message);
         } else {
           setError('An unknown error occurred');
         }
-        setLoading(false);
       }
+      setLoading(false);
     };
 
     void fetchData();
-  }, []);
+  }, [selectedClinic, selectedYear]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -159,30 +172,33 @@ const LoadServiceRevenue = () => {
   );
 };
 
+
 //Another part of Data Point 2
-const LoadServiceRevenueWOConsultation = () => {
-  const [revenueData2, setRevenueData2] = useState<ServiceRevenue[]>([]);
+const LoadServiceRevenueWOConsultation = ({ selectedClinic, selectedYear }: { selectedClinic: number[], selectedYear: number[] }) => {
+  const [revenueData, setRevenueData] = useState<ServiceRevenue[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const response = await axios.get<ServiceRevenue[]>('http://127.0.0.1:5000/api/serviceData/totalRevenueServiceWithoutConsultation');
-        setRevenueData2(response.data);
-        setLoading(false);
+        const queryString = buildQueryString(selectedClinic, selectedYear);
+        const response = await axios.get<ServiceRevenue[]>(`http://127.0.0.1:5000/api/serviceData/totalRevenueServiceWithoutConsultation?${queryString}`);
+        setRevenueData(response.data);
       } catch (err) {
         if (axios.isAxiosError(err)) {
           setError(err.message);
         } else {
           setError('An unknown error occurred');
         }
-        setLoading(false);
       }
+      setLoading(false);
     };
 
     void fetchData();
-  }, []);
+  }, [selectedClinic, selectedYear]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -196,7 +212,7 @@ const LoadServiceRevenueWOConsultation = () => {
     <div>
       <h2>Revenue From Services Without Consultation</h2>
       <ul>
-        {revenueData2.map((service, index) => (
+        {revenueData.map((service, index) => (
           <li key={index}>
             {service.TotalRevenue}
           </li>
@@ -206,35 +222,39 @@ const LoadServiceRevenueWOConsultation = () => {
   );
 };
 
+
+interface RevenuePercentage {
+  TransactionTypeName: string;
+  TotalRevenue: number;
+  PercentageContribution: number; // Add PercentageContribution if it's part of your API response
+}
+
 //Loading Data Point 3
-const LoadPieChart_DataPoint3 = () => {
+const LoadPieChart_DataPoint3 = ({ selectedClinic, selectedYear }: { selectedClinic: number[], selectedYear: number[] }) => {
   const [revenueData, setRevenueData] = useState<RevenuePercentage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const response = await axios.get<RevenuePercentage[]>('http://127.0.0.1:5000/api/serviceData/revenueServicePercentage');
-        const transformedRevenueData = response.data.map(item => ({
-          TransactionTypeName: item.TransactionTypeName,
-          TotalRevenue: item.TotalRevenue,
-          PercentageContribution: item.PercentageContribution
-        }));
-        setRevenueData(transformedRevenueData);
-        setLoading(false);
+        const queryString = buildQueryString(selectedClinic, selectedYear);
+        const response = await axios.get<RevenuePercentage[]>(`http://127.0.0.1:5000/api/serviceData/revenueServicePercentage?${queryString}`);
+        setRevenueData(response.data);
       } catch (err) {
         if (axios.isAxiosError(err)) {
           setError(err.message);
         } else {
           setError('An unknown error occurred');
         }
-        setLoading(false);
       }
+      setLoading(false);
     };
 
     void fetchData();
-  }, []);
+  }, [selectedClinic, selectedYear]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -247,6 +267,7 @@ const LoadPieChart_DataPoint3 = () => {
   return <PieChart_DataPoint3 data={revenueData} />;
 };
 
+
 //Another part of Data Point 3
 interface TopServices {
   TransactionTypeName: string;
@@ -255,16 +276,18 @@ interface TopServices {
   TransactionTypeName: string;
 }
 
-const LoadTopServices = () => {
-  const [listData, setListData] = useState<TopServices[]>([]); // Initialize as an empty array
+const LoadTopServices = ({ selectedClinic, selectedYear }: { selectedClinic: number[], selectedYear: number[] }) => {
+  const [listData, setListData] = useState<TopServices[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const response = await axios.get<TopServices[]>('http://127.0.0.1:5000/api/serviceData/topServices');
-        console.log('Response data:', response.data); // Log response data
+        const queryString = buildQueryString(selectedClinic, selectedYear);
+        const response = await axios.get<TopServices[]>(`http://127.0.0.1:5000/api/serviceData/topServices?${queryString}`);
         setListData(response.data);
       } catch (err) {
         if (axios.isAxiosError(err)) {
@@ -272,14 +295,12 @@ const LoadTopServices = () => {
         } else {
           setError('An unknown error occurred');
         }
-      } finally {
-        setLoading(false);
       }
+      setLoading(false);
     };
-  
+
     void fetchData();
-  }, []);
-  
+  }, [selectedClinic, selectedYear]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -301,10 +322,7 @@ const LoadTopServices = () => {
       </ul>
     </div>
   );
-  
-  
 };
-
 
 export { LoadPieChart_DataPoint1, 
           LoadBarChart_DataPoint2, LoadServiceRevenue, LoadServiceRevenueWOConsultation,
