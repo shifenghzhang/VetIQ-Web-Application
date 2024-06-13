@@ -1,0 +1,42 @@
+{
+    "sourceFile": "python-service/routes/patientData_routes.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 6,
+            "patches": [
+                {
+                    "date": 1717466828715,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1717466834863,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,4 @@\n+from flask import Blueprint, jsonify\r\n+from db_config import get_db_connection\r\n+\r\n+patientData_bp = Blueprint('serviceData_bp', __name__)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1717466841821,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,4 @@\n from flask import Blueprint, jsonify\r\n from db_config import get_db_connection\r\n \r\n-patientData_bp = Blueprint('serviceData_bp', __name__)\n-from flask import Blueprint, jsonify\r\n-from db_config import get_db_connection\r\n-\r\n-serviceData_bp = Blueprint('serviceData_bp', __name__)\n\\ No newline at end of file\n+patientData_bp = Blueprint('patientData_bp', __name__)\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1717466851840,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,33 @@\n+from flask import Blueprint, jsonify\r\n+from db_config import get_db_connection\r\n+\r\n+patientData_bp = Blueprint('patientData_bp', __name__)\r\n+\r\n+#Data Point 1    \r\n+@serviceData_bp.route('/serviceData/usedServicePercentage', methods=['GET'])\r\n+def get_usage_percentage():\r\n+    try:\r\n+        conn = get_db_connection()\r\n+        cursor = conn.cursor()\r\n+        cursor.execute(\"\"\"\r\n+            SELECT TransactionTypeName, COUNT(*) AS UsageCount\r\n+            FROM rmit.FactTransaction_sub\r\n+            WHERE YEAR(TransactionDate) IN (2023, 2024)\r\n+            GROUP BY TransactionTypeName\r\n+        \"\"\")\r\n+        rows = cursor.fetchall()\r\n+        columns = [column[0] for column in cursor.description]\r\n+        usage_per_service = [dict(zip(columns, row)) for row in rows]\r\n+\r\n+        # Calculate total count of transactions\r\n+        total_count = sum(row['UsageCount'] for row in usage_per_service)\r\n+\r\n+        # Calculate percentage usage\r\n+        for row in usage_per_service:\r\n+            row['PercentageUsage'] = (row['UsageCount'] / total_count) * 100\r\n+\r\n+        conn.close()\r\n+        return jsonify(usage_per_service)\r\n+\r\n+    except Exception as e:\r\n+        return jsonify({'error': str(e)})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1717466859582,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,33 @@\n+from flask import Blueprint, jsonify\r\n+from db_config import get_db_connection\r\n+\r\n+patientData_bp = Blueprint('patientData_bp', __name__)\r\n+\r\n+#Data Point 1    \r\n+@patientData_bp.route('/serviceData/usedServicePercentage', methods=['GET'])\r\n+def get_usage_percentage():\r\n+    try:\r\n+        conn = get_db_connection()\r\n+        cursor = conn.cursor()\r\n+        cursor.execute(\"\"\"\r\n+            SELECT TransactionTypeName, COUNT(*) AS UsageCount\r\n+            FROM rmit.FactTransaction_sub\r\n+            WHERE YEAR(TransactionDate) IN (2023, 2024)\r\n+            GROUP BY TransactionTypeName\r\n+        \"\"\")\r\n+        rows = cursor.fetchall()\r\n+        columns = [column[0] for column in cursor.description]\r\n+        usage_per_service = [dict(zip(columns, row)) for row in rows]\r\n+\r\n+        # Calculate total count of transactions\r\n+        total_count = sum(row['UsageCount'] for row in usage_per_service)\r\n+\r\n+        # Calculate percentage usage\r\n+        for row in usage_per_service:\r\n+            row['PercentageUsage'] = (row['UsageCount'] / total_count) * 100\r\n+\r\n+        conn.close()\r\n+        return jsonify(usage_per_service)\r\n+\r\n+    except Exception as e:\r\n+        return jsonify({'error': str(e)})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1717466866634,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n \r\n patientData_bp = Blueprint('patientData_bp', __name__)\r\n \r\n #Data Point 1    \r\n-@patientData_bp.route('/serviceData/usedServicePercentage', methods=['GET'])\r\n+@patientData_bp.route('/pData/usedServicePercentage', methods=['GET'])\r\n def get_usage_percentage():\r\n     try:\r\n         conn = get_db_connection()\r\n         cursor = conn.cursor()\r\n@@ -29,42 +29,5 @@\n         conn.close()\r\n         return jsonify(usage_per_service)\r\n \r\n     except Exception as e:\r\n-        return jsonify({'error': str(e)})\n-from flask import Blueprint, jsonify\r\n-from db_config import get_db_connection\r\n-\r\n-patientData_bp = Blueprint('patientData_bp', __name__)\r\n-\r\n-#Data Point 1    \r\n-@serviceData_bp.route('/serviceData/usedServicePercentage', methods=['GET'])\r\n-def get_usage_percentage():\r\n-    try:\r\n-        conn = get_db_connection()\r\n-        cursor = conn.cursor()\r\n-        cursor.execute(\"\"\"\r\n-            SELECT TransactionTypeName, COUNT(*) AS UsageCount\r\n-            FROM rmit.FactTransaction_sub\r\n-            WHERE YEAR(TransactionDate) IN (2023, 2024)\r\n-            GROUP BY TransactionTypeName\r\n-        \"\"\")\r\n-        rows = cursor.fetchall()\r\n-        columns = [column[0] for column in cursor.description]\r\n-        usage_per_service = [dict(zip(columns, row)) for row in rows]\r\n-\r\n-        # Calculate total count of transactions\r\n-        total_count = sum(row['UsageCount'] for row in usage_per_service)\r\n-\r\n-        # Calculate percentage usage\r\n-        for row in usage_per_service:\r\n-            row['PercentageUsage'] = (row['UsageCount'] / total_count) * 100\r\n-\r\n-        conn.close()\r\n-        return jsonify(usage_per_service)\r\n-\r\n-    except Exception as e:\r\n-        return jsonify({'error': str(e)})\n-from flask import Blueprint, jsonify\r\n-from db_config import get_db_connection\r\n-\r\n-patientData_bp = Blueprint('patientData_bp', __name__)\n\\ No newline at end of file\n+        return jsonify({'error': str(e)})\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1717467165515,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,10 +2,10 @@\n from db_config import get_db_connection\r\n \r\n patientData_bp = Blueprint('patientData_bp', __name__)\r\n \r\n-#Data Point 1    \r\n-@patientData_bp.route('/pData/usedServicePercentage', methods=['GET'])\r\n+#Data Point \r\n+@patientData_bp.route('/patientData/', methods=['GET'])\r\n def get_usage_percentage():\r\n     try:\r\n         conn = get_db_connection()\r\n         cursor = conn.cursor()\r\n"
+                }
+            ],
+            "date": 1717466828715,
+            "name": "Commit-0",
+            "content": "from flask import Blueprint, jsonify\r\nfrom db_config import get_db_connection\r\n\r\nserviceData_bp = Blueprint('serviceData_bp', __name__)"
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/styles/grids.css",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1716845246452,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1716845246452,
+            "name": "Commit-0",
+            "content": ".grid-container {\r\n    display: grid;\r\n    grid-template-columns: repeat(3, 1fr); /* Three columns with equal width */\r\n    gap: 16px; /* Gap between grid items */\r\n  }\r\n  \r\n  .small-graph {\r\n    grid-column: span 1; /* Span 1 column */\r\n  }\r\n  \r\n  .large-graph {\r\n    grid-column: span 2; /* Span 2 columns */\r\n  }\r\n  \r\n  .insights {\r\n    grid-column: span 1; /* Span 1 column */\r\n  }\r\n  \r\n  /* Responsive adjustments */\r\n  @media (max-width: 768px) {\r\n    .grid-container {\r\n      grid-template-columns: 1fr; /* Single column on small screens */\r\n    }\r\n    .large-graph {\r\n      grid-column: span 1; /* Span 1 column on small screens */\r\n    }\r\n  }\r\n  "
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three columns with equal width */
+    gap: 16px; /* Gap between grid items */
+  }
+  
+  .small-graph {
+    grid-column: span 1; /* Span 1 column */
+  }
+  
+  .large-graph {
+    grid-column: span 2; /* Span 2 columns */
+  }
+  
+  .insights {
+    grid-column: span 1; /* Span 1 column */
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .grid-container {
+      grid-template-columns: 1fr; /* Single column on small screens */
+    }
+    .large-graph {
+      grid-column: span 1; /* Span 1 column on small screens */
+    }
+  }
+  

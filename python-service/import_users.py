@@ -47,3 +47,4 @@ except pyodbc.Error as e:
 finally:
     cursor.close()
     connection.close()
+
