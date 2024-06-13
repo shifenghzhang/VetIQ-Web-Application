@@ -1,5 +1,6 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from db_config import get_db_connection
+from mongodb import users_collection
 
 user_bp = Blueprint('user_bp', __name__)
 
@@ -16,3 +17,31 @@ def get_users():
         return jsonify(result)
     except Exception as e:
         return jsonify({'error': str(e)})
+    
+@user_bp.route('/mongo_users', methods=['GET'])
+def get_mongo_users():
+    try:
+        users = list(users_collection.find({}, {'_id': 0}))
+        return jsonify(users)
+    except Exception as e:
+        return jsonify({'error': str(e)})
+    
+@user_bp.route('/add_mongo_user', methods=['POST'])
+def add_mongo_users():
+    try:
+        data = request.json
+        users_collection.insert_one(data)
+        return jsonify({'message': 'user added successfully'})
+    except Exception as e:
+        return jsonify({'error': str(e)})
+    
+@user_bp.route('/delete_mongo_user/<user_id>', methods=['DELETE'])
+def delete_mongo_user(user_id):
+    try:
+        result = users_collection.delete_one({"user_id": int(user_id)})
+        if result.deleted_count == 1:
+            return jsonify({"message": "User deleted successfully."})
+        else:
+            return jsonify({"message": "User not found."}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500

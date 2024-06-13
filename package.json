@@ -25,7 +25,11 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.1.0",
+<<<<<<< HEAD
     "react-select": "^5.8.0",
+=======
+    "react-responsive-carousel": "^3.2.23",
+>>>>>>> cf715bc0d0fc64c5d383a3c5308077d9068ab3d1
     "server-only": "^0.0.1",
     "superjson": "^2.2.1",
     "zod": "^3.22.4"
