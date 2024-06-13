@@ -14,6 +14,19 @@ class MongoUsersTestCase(unittest.TestCase):
         if json_data:
             self.assertIsInstance(json_data[0], dict)  # Check if the first element is a dictionary
 
+    def test_add_mongo_user(self):
+        new_user_data = {
+            "consulting_vet": False,
+            "email": "newuser@example.com",
+            "password": "newpassword",
+            "site_id": 2,
+            "user_name": "New User"
+        }
+        response = self.app.post('/api/add_mongo_user', json=new_user_data)  # Use self.app here
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('user added successfully', response.get_data(as_text=True))
+
+
 
 
 if __name__ == '__main__':
