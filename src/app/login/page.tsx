@@ -143,6 +143,39 @@ const LoginCard: React.FC = () => {
         )}
         {showChangePassword && (
           <ChangePasswordCard email={email} onPasswordChange={() => setShowLoginCard(false)} />
+          <div>
+            <h3 className="text-lg font-bold mb-2">Forgot password?</h3>
+            <p className="text-sm mb-4">No worries, we&apos;ll send you reset instructions.</p>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-bold" htmlFor="forgotEmail">
+                Enter your email
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="email"
+                placeholder="Email"
+                required
+                onChange={(e) => setForgotEmail(e.target.value)}
+              />
+            </div>
+            <div className="mt-4 text-center">
+              <button
+                className="w-full bg-[rgb(0,146,226)] hover:bg-blue-600 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                type="button"
+                onClick={handleResetPassword}
+              >
+                Reset password
+              </button>
+            </div>
+            <div className="mt-4 text-center">
+              <button
+                className="text-blue-500 hover:text-blue-700 focus:outline-none"
+                onClick={() => setShowForgotPassword(false)}
+              >
+                &lt; Back to log in
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </div>
