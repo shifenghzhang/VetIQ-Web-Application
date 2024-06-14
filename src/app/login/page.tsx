@@ -4,11 +4,14 @@ import RegisterCard from '../register/page';
 import { useLoginCard } from '../_contexts/logincardContext';
 import axios from 'axios';
 import { useAuth } from '../_contexts/authProvider';
+import ForgotPassword from '../forgotPassword/page';
+import ChangePasswordCard from '../changePassword/page';
 
 interface MongoUsers {
   consulting_vet: boolean;
   email: string | null;
   password: string;
+  must_change_password?: boolean;
   site_id: number;
   user_id: number;
   user_name: string | null;
@@ -21,7 +24,8 @@ const LoginCard: React.FC = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [forgotEmail, setForgotEmail] = useState("");
+  const [showChangePassword, setShowChangePassword] = useState(false);
+
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,8 +35,14 @@ const LoginCard: React.FC = () => {
       for (const user of response.data) {
         if (user.email === email) {
           if (user.password === password) {
-            login(user);
-            setShowLoginCard(false);
+            if (user.must_change_password) {
+              login(user);
+              setShowChangePassword(true);
+            }
+            else {
+              login(user);
+              setShowLoginCard(false);
+            }
           } else {
             setErrorMessage("Incorrect user details");
           }
@@ -53,11 +63,6 @@ const LoginCard: React.FC = () => {
     setShowForgotPassword(true);
   };
 
-  const handleResetPassword = () => {
-    // TODO: Implement the logic to reset the password
-    console.log("Reset password for email:", forgotEmail);
-  };
-
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
       <div className="bg-white shadow-md rounded-lg p-8 max-w-md w-full relative">
@@ -66,7 +71,8 @@ const LoginCard: React.FC = () => {
           onClick={handleClose}
         >
           &times;
-        </button>{!showForgotPassword && (
+        </button>
+        {!showForgotPassword && !showChangePassword && (
           <>
             <div className="flex mb-6">
               <button
@@ -133,39 +139,10 @@ const LoginCard: React.FC = () => {
             </>
         )}
         {showForgotPassword && (
-          <div>
-            <h3 className="text-lg font-bold mb-2">Forgot password?</h3>
-            <p className="text-sm mb-4">No worries, we'll send you reset instructions.</p>
-            <div className="mb-4">
-              <label className="block text-gray-700 font-bold" htmlFor="forgotEmail">
-                Enter your email
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                type="email"
-                placeholder="Email"
-                required
-                onChange={(e) => setForgotEmail(e.target.value)}
-              />
-            </div>
-            <div className="mt-4 text-center">
-              <button
-                className="w-full bg-[rgb(0,146,226)] hover:bg-blue-600 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
-                onClick={handleResetPassword}
-              >
-                Reset password
-              </button>
-            </div>
-            <div className="mt-4 text-center">
-              <button
-                className="text-blue-500 hover:text-blue-700 focus:outline-none"
-                onClick={() => setShowForgotPassword(false)}
-              >
-                &lt; Back to log in
-              </button>
-            </div>
-          </div>
+          <ForgotPassword onBack={() => setShowForgotPassword(false)} />
+        )}
+        {showChangePassword && (
+          <ChangePasswordCard email={email} onPasswordChange={() => setShowLoginCard(false)} />
         )}
       </div>
     </div>
