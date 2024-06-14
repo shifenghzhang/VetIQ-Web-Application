@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, FormEvent, useEffect } from 'react';
 import axios from 'axios';
+import { useAuth } from '../_contexts/authProvider';
 
 interface MongoUsers {
   consulting_vet: boolean;
@@ -17,6 +18,7 @@ interface PutResponse {
 type Tab = 'Profile' | 'Password' | 'Security' | 'Email' | 'Notifications';
 
 function Page() {
+  const { user } = useAuth(); // Get the current user's information
   const [activeTab, setActiveTab] = useState<Tab>('Profile');
 
   const [currentPassword, setCurrentPassword] = useState('');
@@ -39,24 +41,26 @@ function Page() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const userEmail = 'test@tester.com'; // Replace with the actual user's email or user ID
-  
-        // Fetch the user from MongoDB
-        const response = await axios.get<MongoUsers[]>('http://127.0.0.1:5000/api/mongo_users');
-        const user = response.data.find((user) => user.email === userEmail);
-  
-        if (user) {
-          setName(user.user_name || '');
-          setConsultingVet(user.consulting_vet);
-          // Set other user data fields
+        if (user?.email) {
+          const userEmail = user.email; // Use the current user's email
+
+          // Fetch the user from MongoDB
+          const response = await axios.get<MongoUsers[]>('http://127.0.0.1:5000/api/mongo_users');
+          const userData = response.data.find((user) => user.email === userEmail);
+
+          if (userData) {
+            setName(userData.user_name || '');
+            setConsultingVet(userData.consulting_vet);
+            // Set other user data fields
+          }
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
     };
-  
+
     fetchUserData();
-  }, []);
+  }, [user]);
 
   const handleTabChange = (tab: Tab) => {
     setActiveTab(tab);
@@ -64,74 +68,73 @@ function Page() {
 
   const handlePasswordChange = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
+
     if (newPassword !== confirmPassword) {
       setPasswordError('New password and confirm password do not match.');
       setPasswordSuccess(false);
       return;
     }
-  
+
     try {
-      // Get the current user's email or user ID (you may need to adjust this based on your authentication system)
-      const userEmail = 'test@tester.com'; // Replace with the actual user's email or user ID
-  
-      // Fetch the user from MongoDB
-      const response = await axios.get<MongoUsers[]>('http://127.0.0.1:5000/api/mongo_users');
-      const user = response.data.find((user) => user.email === userEmail);
-  
-      if (!user) {
-        setPasswordError('User not found');
-        setPasswordSuccess(false);
-        return;
-      }
-      
-      console.log(user.user_id);
+      if (user?.email) {
+        const userEmail = user.email; // Use the current user's email
 
-      // Check if the current password matches the password stored in MongoDB
-      if (currentPassword !== user.password) {
-        setPasswordError('Current password is incorrect');
-        setPasswordSuccess(false);
-        return;
-      }
-  
-      // Update the user's password in MongoDB
-      const updatedUser: MongoUsers = {
-        ...user,
-        password: newPassword,
-      };
+        // Fetch the user from MongoDB
+        const response = await axios.get<MongoUsers[]>('http://127.0.0.1:5000/api/mongo_users');
+        const userData = response.data.find((user) => user.email === userEmail);
 
-      const putResponse = await axios.put<PutResponse>(
-        `http://127.0.0.1:5000/api/update_mongo_user_password/${user.user_id}`,
-        updatedUser
-      );
-  
-      if (putResponse.status === 200) {
-        // Password updated successfully
-        setCurrentPassword('');
-        setNewPassword('');
-        setConfirmPassword('');
-        setPasswordError('');
-        setPasswordSuccess(true);
-      } else {
-        // Handle error case
-        setPasswordError('An error occurred while updating the password.');
-        setPasswordSuccess(false);
+        if (!userData) {
+          setPasswordError('User not found');
+          setPasswordSuccess(false);
+          return;
+        }
+
+        // Check if the current password matches the password stored in MongoDB
+        if (currentPassword !== userData.password) {
+          setPasswordError('Current password is incorrect');
+          setPasswordSuccess(false);
+          return;
+        }
+
+        // Update the user's password in MongoDB
+        const updatedUser: MongoUsers = {
+          ...userData,
+          password: newPassword,
+        };
+
+        const putResponse = await axios.put<PutResponse>(
+          `http://127.0.0.1:5000/api/update_mongo_user_password/${userData.user_id}`,
+          updatedUser
+        );
+
+        if (putResponse.status === 200) {
+          // Password updated successfully
+          setCurrentPassword('');
+          setNewPassword('');
+          setConfirmPassword('');
+          setPasswordError('');
+          setPasswordSuccess(true);
+        } else {
+          // Handle error case
+          setPasswordError('An error occurred while updating the password.');
+          setPasswordSuccess(false);
+        }
       }
     } catch (error) {
       console.error('Error updating password:', error);
-    if (axios.isAxiosError(error)) {
-      if (error.response) {
-        setPasswordError(error.response.data.error || 'An error occurred while updating the password.');
-      } else if (error.request) {
-        // Request was made but no response was received
-        setPasswordError('No response received from the server.');
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          setPasswordError(error.response.data.error || 'An error occurred while updating the password.');
+        } else if (error.request) {
+          // Request was made but no response was received
+          setPasswordError('No response received from the server.');
+        } else {
+          setPasswordError('An error occurred while setting up the request.');
+        }
       } else {
-        setPasswordError('An error occurred while setting up the request.');
+        setPasswordError('An unexpected error occurred.');
       }
-    } else {
-      setPasswordError('An unexpected error occurred.');
-    }
-    setPasswordSuccess(false);
+      setPasswordSuccess(false);
     }
   };
 
@@ -369,6 +372,7 @@ function Page() {
                       value={notificationFrequency}
                       onChange={(e) => setNotificationFrequency(e.target.value)}
                     >
+                      <option value="immediate">Immediate</option>
                       <option value="weekly">Weekly</option>
                       <option value="monthly">Monthly</option>
                       <option value="quarterly">Quarterly</option>
