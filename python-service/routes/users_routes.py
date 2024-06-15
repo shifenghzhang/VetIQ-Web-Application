@@ -115,3 +115,62 @@ def change_password_handler():
         return jsonify(user), 200
     except Exception as e:
         return jsonify({'error': f'Failed to change password: {str(e)}'}), 500
+
+@user_bp.route('/update_mongo_user_password/<user_id>', methods=['PUT'])
+def update_mongo_user_password(user_id):
+    try:
+        data = request.json
+        password = data.get('password')
+
+        if not password:
+            return jsonify({"message": "Password is required."}), 400
+
+        result = users_collection.update_one(
+            {"user_id": int(user_id)},
+            {"$set": {"password": password}}
+        )
+
+        if result.modified_count == 1:
+            return jsonify({"message": "Password updated successfully."})
+        else:
+            return jsonify({"message": "User not found."}), 404
+
+@user_bp.route('/add_engagement_survey', methods=['POST'])
+def add_engagement_survey():
+    try:
+        data = request.json
+        user_id = data.get('user_id')
+        new_data = data.get('new_data')
+
+        result = users_collection.update_one(
+            {"user_id": int(user_id)},
+            {"$set": {"engagement_survey": new_data}}
+        )
+
+        if result.matched_count == 1:
+            return jsonify({"message": "Survey data added successfully."})
+        else:
+            return jsonify({"message": "User not found."}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+
+@user_bp.route('/add_analytics_service_survey', methods=['POST'])
+def add_analytics_service_survey():
+    try:
+        data = request.json
+        user_id = data.get('user_id')
+        new_data = data.get('new_data')
+
+        result = users_collection.update_one(
+            {"user_id": int(user_id)},
+            {"$set": {"analytics_service_survey": new_data}}
+        )
+
+        if result.matched_count == 1:
+            return jsonify({"message": "Survey data added successfully."})
+        else:
+            return jsonify({"message": "User not found."}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
