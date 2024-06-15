@@ -49,7 +49,7 @@ function Page() {
           const userData = response.data.find((user) => user.email === userEmail);
 
           if (userData) {
-            setName(userData.user_name || '');
+            setName(userData.user_name ?? '');
             setConsultingVet(userData.consulting_vet);
             // Set other user data fields
           }
@@ -59,8 +59,12 @@ function Page() {
       }
     };
 
-    fetchUserData();
+    // IIFE to handle async function in useEffect
+    void (async () => {
+      await fetchUserData();
+    })();
   }, [user]);
+
 
   const handleTabChange = (tab: Tab) => {
     setActiveTab(tab);
@@ -124,6 +128,7 @@ function Page() {
       console.error('Error updating password:', error);
       if (axios.isAxiosError(error)) {
         if (error.response) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
           setPasswordError(error.response.data.error || 'An error occurred while updating the password.');
         } else if (error.request) {
           // Request was made but no response was received
