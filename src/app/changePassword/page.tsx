@@ -25,6 +25,7 @@ const ChangePasswordCard: React.FC<{ email: string; onPasswordChange: () => void
         setErrorMessage("");
         setTimeout(onPasswordChange, 1500); // Close the card after a short delay
       } else {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         setErrorMessage(response.data.error || 'Failed to change password');
       }
     } catch (error) {
