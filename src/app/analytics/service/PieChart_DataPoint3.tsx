@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
 import { colourPalette } from '../../_components/chartcolourPalette'; // Import colour palette
