@@ -12,10 +12,11 @@ function Page() {
   const [selectedClinic, setSelectedClinic] = useState<number[]>([]); 
   const [selectedYear, setSelectedYear] = useState<number[]>([]); 
 
+  //Dropdown menu
   return (
     <div className="dashboard-container">
-      <div className="flex items-center mb-4 w-full max-w-xl">
-        <Select
+      <div className="flex items-center mb-4 w-full max-w-xl"> 
+        <Select //Create dropdown menu for selecting clinic
           isMulti
           options={clinicOptions}
           className="mr-3.5 w-full"
@@ -23,7 +24,7 @@ function Page() {
           onChange={(selectedOptions) => setSelectedClinic(handleClinicChange(selectedOptions as Option[]))}
           value={selectedClinic.map(value => clinicOptions.find(option => option.value === value))}
         />
-        <Select
+        <Select //Create dropdown menu for selecting year
           isMulti
           options={yearOptions}
           className="mr-3.5 w-full"
