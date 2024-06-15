@@ -20,13 +20,14 @@ const Header = () => {
       const word = pathname.substring(pathname.lastIndexOf("/") + 1);
       return word.charAt(0).toUpperCase() + word.slice(1);
     }
+
   };
 
   const { isCollapsed } = useSidebar();
 
   const headerClass = isCollapsed
-    ? "fixed top-0 right-0 z-[99997] w-[calc(100%-5rem)] h-16 flex items-center justify-between transition-all duration-500"
-    : "fixed top-0 right-0 z-[99997] w-[calc(100%-16rem)] h-16 flex items-center justify-between transition-all duration-500";
+    ? "fixed top-0 right-0 z-[99997] w-[calc(100%-5rem)] h-16 flex items-center justify-between transition-all duration-500 bg-white"
+    : "fixed top-0 right-0 z-[99997] w-[calc(100%-16rem)] h-16 flex items-center justify-between transition-all duration-500 bg-white";
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -53,3 +54,4 @@ const Header = () => {
 };
 
 export default Header;
+
