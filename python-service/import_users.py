@@ -46,8 +46,5 @@ except pyodbc.Error as e:
     print(f"Error: {e}")
 finally:
     cursor.close()
-<<<<<<< HEAD
     connection.close()
-=======
-    connection.close()
->>>>>>> cf715bc0d0fc64c5d383a3c5308077d9068ab3d1
+
