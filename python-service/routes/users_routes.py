@@ -78,21 +78,22 @@ def reset_password_handler():
         return jsonify({'error': f'Failed to update password: {str(e)}'}), 500
 
     # Set up the server and email details
-    smtp_server = 'sandbox.smtp.mailtrap.io'
-    smtp_port = 2525
+    smtp_server = 'live.smtp.mailtrap.io'
+    smtp_port = 587
     # Using mailtrap as a proof of concept, can be changed
-    smtp_user = '8e100f876f1d3e'
-    smtp_pass = '42dc7803516e2b'
+    smtp_user = 'api'
+    smtp_pass = 'e945270bfe6a1bf6ad05c6850dcd7815'
 
     msg = MIMEText(f'Your new password is: {new_password}\n\nNote: This is a test email.')
     msg['Subject'] = 'Password Reset'
-    msg['From'] = 'your-email@example.com'
+    msg['From'] = 'mailtrap@demomailtrap.com'
     msg['To'] = email
 
     try:
         with smtplib.SMTP(smtp_server, smtp_port) as server:
+            server.starttls()
             server.login(smtp_user, smtp_pass)
-            server.sendmail('your-email@example.com', email, msg.as_string())
+            server.sendmail('mailtrap@demomailtrap.com', email, msg.as_string())
         return jsonify({'message': 'Password reset email sent'}), 200
     except Exception as e:
         return jsonify({'error': f'Failed to send email: {str(e)}'}), 500
