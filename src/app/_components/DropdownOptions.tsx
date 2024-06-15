@@ -6,9 +6,9 @@ export interface Option {
 
 // Add Clinics here
 export const clinicOptions: Option[] = [
-  //{ value: 3, label: 'Clinic 3' },
-  //{ value: 4, label: 'Clinic 4' },
-  //{ value: 5, label: 'Clinic 5' },
+  { value: 3, label: 'Clinic 3' },
+  { value: 4, label: 'Clinic 4' },
+  { value: 5, label: 'Clinic 5' },
   { value: 6, label: 'Clinic 6' },
   { value: 7, label: 'Clinic 7' }
 ];
