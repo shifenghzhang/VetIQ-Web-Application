@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flask_cors import CORS
 from routes.users_routes import user_bp
@@ -17,4 +18,5 @@ def index():
     return "Welcome to the Flask API!"
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
