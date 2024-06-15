@@ -134,6 +134,8 @@ def update_mongo_user_password(user_id):
             return jsonify({"message": "Password updated successfully."})
         else:
             return jsonify({"message": "User not found."}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @user_bp.route('/add_engagement_survey', methods=['POST'])
 def add_engagement_survey():

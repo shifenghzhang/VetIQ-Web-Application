@@ -8,7 +8,6 @@ import { LoadDonutChart_DataPoint1, LoadBarChart_DataPoint2, LoadPieChart_DataPo
           LoadServiceRevenue, LoadServiceRevenueWOConsultation, LoadTopServices } from './LoadData'; // Import charts or other data
 import AnalyticsModal from '~/app/_components/analyticsModal';
 import { useAuth } from '~/app/_contexts/authProvider';
-import { useEffect, useState } from 'react';
 import axios from 'axios';
         
 interface MongoUsers {
@@ -173,15 +172,13 @@ function Page() {
           </Box>
         </Grid>
       </Grid>
-    </div>
-    <div>
       {user &&
         <AnalyticsModal 
           isOpen={isModalOpen}
           onRequestClose={handleModalClose}
           onSubmit={(answers) => handleModalSubmit(answers)}
         />
-      }      
+      }
     </div>
   );
 }
