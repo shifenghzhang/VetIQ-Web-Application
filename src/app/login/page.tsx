@@ -4,8 +4,8 @@ import RegisterCard from '../register/page';
 import { useLoginCard } from '../_contexts/logincardContext';
 import axios from 'axios';
 import { useAuth } from '../_contexts/authProvider';
-import ForgotPassword from '../forgotPassword/page';
-import ChangePasswordCard from '../changePassword/page';
+import ForgotPassword from '../_components/forgotPassword';
+import ChangePasswordCard from '../_components/changePasswordCard';
 
 interface MongoUsers {
   consulting_vet: boolean;

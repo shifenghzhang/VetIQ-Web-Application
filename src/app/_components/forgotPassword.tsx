@@ -2,7 +2,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const ForgotPassword: React.FC<{ onBack: () => void }> = ({ onBack }) => {
+interface ForgotPasswordProps {
+  onBack: () => void;
+}
+
+const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBack }) => {
   const [forgotEmail, setForgotEmail] = useState("");
   const [resetSuccess, setResetSuccess] = useState(false);
   const [resetError, setResetError] = useState('');
