@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import BarChart_DataPoint2 from './BarChart_DataPoint2';
 import PieChart_DataPoint3 from './PieChart_DataPoint3';
-import PieChart_DataPoint1 from './PieChart_DataPoint1';
+import DonutChart_DataPoint1 from './DonutChart_DataPoint1';
 
 // Helper function to build query string
 const buildQueryString = (selectedClinic: number[], selectedYear: number[]) => {
@@ -23,7 +23,7 @@ interface UsagePercentage {
   TotalUsage: number;
 }
 
-const LoadPieChart_DataPoint1: React.FC<{ selectedClinic: number[], selectedYear: number[] }> = ({ selectedClinic, selectedYear }) => {
+const LoadDonutChart_DataPoint1: React.FC<{ selectedClinic: number[], selectedYear: number[] }> = ({ selectedClinic, selectedYear }) => {
   const [usageData, setUsageData] = useState<UsagePercentage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -64,7 +64,7 @@ const LoadPieChart_DataPoint1: React.FC<{ selectedClinic: number[], selectedYear
     return <p>Error: {error}</p>;
   }
 
-  return <PieChart_DataPoint1 data={usageData} />;
+  return <DonutChart_DataPoint1 data={usageData} />;
 };
 
 // Loading Data Point 2
@@ -124,7 +124,7 @@ interface ServiceRevenue {
   TotalRevenue: number;
 }
 
-const LoadServiceRevenue = ({ selectedClinic, selectedYear }: { selectedClinic: number[], selectedYear: number[] }) => {
+const LoadServiceRevenue: React.FC<{ selectedClinic: number[], selectedYear: number[] }> = ({ selectedClinic, selectedYear }) => {
   const [revenueData, setRevenueData] = useState<ServiceRevenue[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -136,7 +136,11 @@ const LoadServiceRevenue = ({ selectedClinic, selectedYear }: { selectedClinic: 
       try {
         const queryString = buildQueryString(selectedClinic, selectedYear);
         const response = await axios.get<ServiceRevenue[]>(`http://127.0.0.1:5000/api/serviceData/totalRevenueService?${queryString}`);
-        setRevenueData(response.data);
+        const transformedData = response.data.map(service => ({
+          ...service,
+          TotalRevenue: parseFloat(service.TotalRevenue as unknown as string) // Ensure TotalRevenue is a float
+        }));
+        setRevenueData(transformedData);
       } catch (err) {
         if (axios.isAxiosError(err)) {
           setError(err.message);
@@ -160,11 +164,10 @@ const LoadServiceRevenue = ({ selectedClinic, selectedYear }: { selectedClinic: 
 
   return (
     <div>
-      <h2>Revenue From Services</h2>
       <ul>
         {revenueData.map((service, index) => (
           <li key={index}>
-            {service.TotalRevenue}
+            <p style={{ fontSize: '18px', marginBottom: '5px' }}>{`$${service.TotalRevenue}`} </p>
           </li>
         ))}
       </ul>
@@ -186,7 +189,11 @@ const LoadServiceRevenueWOConsultation = ({ selectedClinic, selectedYear }: { se
       try {
         const queryString = buildQueryString(selectedClinic, selectedYear);
         const response = await axios.get<ServiceRevenue[]>(`http://127.0.0.1:5000/api/serviceData/totalRevenueServiceWithoutConsultation?${queryString}`);
-        setRevenueData(response.data);
+        const transformedData = response.data.map(service => ({
+          ...service,
+          TotalRevenue: parseFloat(service.TotalRevenue as unknown as string) // Ensure TotalRevenue is a float
+        }));
+        setRevenueData(transformedData);
       } catch (err) {
         if (axios.isAxiosError(err)) {
           setError(err.message);
@@ -210,11 +217,10 @@ const LoadServiceRevenueWOConsultation = ({ selectedClinic, selectedYear }: { se
 
   return (
     <div>
-      <h2>Revenue From Services Without Consultation</h2>
       <ul>
         {revenueData.map((service, index) => (
           <li key={index}>
-            {service.TotalRevenue}
+            <p style={{ fontSize: '18px', marginBottom: '5px' }}>{`$${service.TotalRevenue}`}</p>
           </li>
         ))}
       </ul>
@@ -312,7 +318,6 @@ const LoadTopServices = ({ selectedClinic, selectedYear }: { selectedClinic: num
 
   return (
     <div>
-      <h2>Top Services Contribution</h2>
       <ul style={{ listStyle: 'none', padding: 0 }}>
         {listData.map((service, index) => (
           <li key={index} style={{ marginBottom: '5px' }}>
@@ -324,7 +329,7 @@ const LoadTopServices = ({ selectedClinic, selectedYear }: { selectedClinic: num
   );
 };
 
-export { LoadPieChart_DataPoint1, 
+export { LoadDonutChart_DataPoint1, 
           LoadBarChart_DataPoint2, LoadServiceRevenue, LoadServiceRevenueWOConsultation,
           LoadPieChart_DataPoint3, LoadTopServices };
 
