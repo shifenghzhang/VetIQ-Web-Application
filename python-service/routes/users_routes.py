@@ -45,7 +45,25 @@ def delete_mongo_user(user_id):
             return jsonify({"message": "User not found."}), 404
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-    
+
+@user_bp.route('/update_mongo_user_password/<user_id>', methods=['PUT'])
+def update_mongo_user_password(user_id):
+    try:
+        data = request.json
+        password = data.get('password')
+
+        if not password:
+            return jsonify({"message": "Password is required."}), 400
+
+        result = users_collection.update_one(
+            {"user_id": int(user_id)},
+            {"$set": {"password": password}}
+        )
+
+        if result.modified_count == 1:
+            return jsonify({"message": "Password updated successfully."})
+        else:
+            return jsonify({"message": "User not found."}), 404
 
 @user_bp.route('/add_engagement_survey', methods=['POST'])
 def add_engagement_survey():
