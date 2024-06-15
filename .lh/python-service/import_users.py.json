@@ -1,0 +1,18 @@
+{
+    "sourceFile": "python-service/import_users.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1717415763105,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1717415763105,
+            "name": "Commit-0",
+            "content": "import pyodbc\r\nimport pymongo\r\nimport random\r\nimport string\r\nfrom db_config import get_db_connection\r\nfrom mongodb import users_collection\r\n\r\n# Function to generate a random password\r\ndef generate_password(length=8):\r\n    characters = string.ascii_letters + string.digits\r\n    password = ''.join(random.choice(characters) for i in range(length))\r\n    return password\r\n\r\n# Import user details from SQL Server and store in MongoDB\r\ntry:\r\n    connection = get_db_connection()\r\n    cursor = connection.cursor()\r\n    cursor.execute(\"SELECT UserID, UserName, EmailAddressString, SiteID, ConsultingVet FROM DimUser\")\r\n    \r\n    for row in cursor.fetchall():\r\n        user_id = row.UserID\r\n        user_name = row.UserName\r\n        password = generate_password()\r\n        email = row.EmailAddressString\r\n        site_id = row.SiteID\r\n        consulting_vet = row.ConsultingVet\r\n        \r\n        # Check if user already exists in MongoDB\r\n        if users_collection.find_one({\"user_id\": user_id}):\r\n            print(f\"User {user_name} already exists. Skipping insertion.\")\r\n            continue\r\n        \r\n        user_data = {\r\n            \"user_id\": user_id,\r\n            \"user_name\": user_name,\r\n            \"password\": password,\r\n            \"email\": email,\r\n            \"site_id\": site_id,\r\n            \"consulting_vet\": consulting_vet\r\n        }\r\n        \r\n        users_collection.insert_one(user_data)\r\n        print(f\"Inserted user {user_name} with generated password.\")\r\n    \r\nexcept pyodbc.Error as e:\r\n    print(f\"Error: {e}\")\r\nfinally:\r\n    cursor.close()\r\n    connection.close()"
+        }
+    ]
+}
