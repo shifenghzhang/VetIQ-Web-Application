@@ -58,9 +58,12 @@ const PieChart_DataPoint3: React.FC<PieChartProps> = ({ data }) => {
       // Calculate total percentage contribution
       const totalPercentage = d3.sum(data, d => d.PercentageContribution);
 
+      // Filter out data with 0.05% contribution for the legend
+      const filteredData = data.filter(d => d.PercentageContribution > 0.05);
+
       // Position the legend
       const legendWidth = 120; // Adjust width as needed
-      const legendHeight = data.length * 20; // Height of the legend based on number of items
+      const legendHeight = filteredData.length * 20; // Height of the legend based on number of items
       const legendX = width + margin.right - legendWidth - 90; // Right side of the SVG minus margin and legend width
       const legendY = (height - legendHeight) / 2 + 50; // Center vertically
 
@@ -68,7 +71,7 @@ const PieChart_DataPoint3: React.FC<PieChartProps> = ({ data }) => {
         .attr('transform', `translate(${legendX},${legendY})`);
 
       legendGroup.selectAll('rect')
-        .data(data)
+        .data(filteredData)
         .enter().append('rect')
         .attr('x', 0)
         .attr('y', (d, i) => i * 20)
@@ -77,7 +80,7 @@ const PieChart_DataPoint3: React.FC<PieChartProps> = ({ data }) => {
         .style('fill', d => colour(d.TransactionTypeName) as string);
 
       legendGroup.selectAll('text')
-        .data(data)
+        .data(filteredData)
         .enter().append('text')
         .attr('x', 24)
         .attr('y', (d, i) => i * 20 + 9)

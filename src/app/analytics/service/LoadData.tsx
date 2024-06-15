@@ -124,7 +124,7 @@ interface ServiceRevenue {
   TotalRevenue: number;
 }
 
-const LoadServiceRevenue = ({ selectedClinic, selectedYear }: { selectedClinic: number[], selectedYear: number[] }) => {
+const LoadServiceRevenue: React.FC<{ selectedClinic: number[], selectedYear: number[] }> = ({ selectedClinic, selectedYear }) => {
   const [revenueData, setRevenueData] = useState<ServiceRevenue[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -136,7 +136,11 @@ const LoadServiceRevenue = ({ selectedClinic, selectedYear }: { selectedClinic: 
       try {
         const queryString = buildQueryString(selectedClinic, selectedYear);
         const response = await axios.get<ServiceRevenue[]>(`http://127.0.0.1:5000/api/serviceData/totalRevenueService?${queryString}`);
-        setRevenueData(response.data);
+        const transformedData = response.data.map(service => ({
+          ...service,
+          TotalRevenue: parseFloat(service.TotalRevenue as unknown as string) // Ensure TotalRevenue is a float
+        }));
+        setRevenueData(transformedData);
       } catch (err) {
         if (axios.isAxiosError(err)) {
           setError(err.message);
@@ -147,7 +151,7 @@ const LoadServiceRevenue = ({ selectedClinic, selectedYear }: { selectedClinic: 
       setLoading(false);
     };
 
-    void fetchData();
+    fetchData();
   }, [selectedClinic, selectedYear]);
 
   if (loading) {
@@ -163,7 +167,7 @@ const LoadServiceRevenue = ({ selectedClinic, selectedYear }: { selectedClinic: 
       <ul>
         {revenueData.map((service, index) => (
           <li key={index}>
-            {service.TotalRevenue}
+            {`$${service.TotalRevenue}`}
           </li>
         ))}
       </ul>
@@ -185,7 +189,11 @@ const LoadServiceRevenueWOConsultation = ({ selectedClinic, selectedYear }: { se
       try {
         const queryString = buildQueryString(selectedClinic, selectedYear);
         const response = await axios.get<ServiceRevenue[]>(`http://127.0.0.1:5000/api/serviceData/totalRevenueServiceWithoutConsultation?${queryString}`);
-        setRevenueData(response.data);
+        const transformedData = response.data.map(service => ({
+          ...service,
+          TotalRevenue: parseFloat(service.TotalRevenue as unknown as string) // Ensure TotalRevenue is a float
+        }));
+        setRevenueData(transformedData);
       } catch (err) {
         if (axios.isAxiosError(err)) {
           setError(err.message);
@@ -212,7 +220,7 @@ const LoadServiceRevenueWOConsultation = ({ selectedClinic, selectedYear }: { se
       <ul>
         {revenueData.map((service, index) => (
           <li key={index}>
-            {service.TotalRevenue}
+            {`$${service.TotalRevenue}`}
           </li>
         ))}
       </ul>
