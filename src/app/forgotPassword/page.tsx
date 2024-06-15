@@ -14,11 +14,13 @@ const ForgotPassword: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         setResetSuccess(true);
         setForgotEmail('');
       } else {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         setResetError(response.data.error || 'Failed to send password reset email');
       }
     } catch (error: unknown) {
       console.error('Error sending password reset email:', error);
       if (axios.isAxiosError(error) && error.response) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         setResetError(error.response.data.error || 'An error occurred while sending the password reset email');
       } else {
         setResetError('An unknown error occurred while sending the password reset email');
@@ -29,7 +31,7 @@ const ForgotPassword: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   return (
     <div>
       <h3 className="text-lg font-bold mb-2">Forgot password?</h3>
-      <p className="text-sm mb-4">No worries, we'll send you reset instructions.</p>
+      <p className="text-sm mb-4">No worries, we&apos;ll send you reset instructions.</p>
       <div className="mb-4">
         <label className="block text-gray-700 font-bold" htmlFor="forgotEmail">
           Enter your email
