@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
 import { colourPalette } from '../../_components/chartcolourPalette'; // Import colour palette
@@ -82,6 +78,7 @@ const DonutChart_DataPoint1: React.FC<PieChartProps> = ({ data }) => {
           }
         });
       };
+      
 
       // Initial label positions
       const labels = labelData.map(d => {
@@ -117,7 +114,7 @@ const DonutChart_DataPoint1: React.FC<PieChartProps> = ({ data }) => {
 
       // Labels outside slices
       svg.selectAll('text')
-        .data(labels) 
+        .data(labels)
         .enter().append('text')
         .attr('transform', d => `translate(${d.x},${d.y})`)
         .attr('text-anchor', d => (d.x > 0) ? 'start' : 'end')

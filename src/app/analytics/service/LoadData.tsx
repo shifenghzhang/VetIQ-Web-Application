@@ -151,7 +151,7 @@ const LoadServiceRevenue: React.FC<{ selectedClinic: number[], selectedYear: num
       setLoading(false);
     };
 
-    fetchData();
+    void fetchData();
   }, [selectedClinic, selectedYear]);
 
   if (loading) {
@@ -167,7 +167,7 @@ const LoadServiceRevenue: React.FC<{ selectedClinic: number[], selectedYear: num
       <ul>
         {revenueData.map((service, index) => (
           <li key={index}>
-            {`$${service.TotalRevenue}`}
+            <p style={{ fontSize: '18px', marginBottom: '5px' }}>{`$${service.TotalRevenue}`} </p>
           </li>
         ))}
       </ul>
@@ -220,7 +220,7 @@ const LoadServiceRevenueWOConsultation = ({ selectedClinic, selectedYear }: { se
       <ul>
         {revenueData.map((service, index) => (
           <li key={index}>
-            {`$${service.TotalRevenue}`}
+            <p style={{ fontSize: '18px', marginBottom: '5px' }}>{`$${service.TotalRevenue}`}</p>
           </li>
         ))}
       </ul>

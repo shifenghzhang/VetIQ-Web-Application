@@ -38,7 +38,7 @@ function Page() {
         <Grid item xs={12} md={4.75}>
           <Box sx={{ height: '125px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
             <Typography variant="h6" gutterBottom>
-              Revenue From Services
+              Total Revenue From Services
             </Typography>
             <LoadServiceRevenue selectedClinic={selectedClinic} selectedYear={selectedYear} />
           </Box>
@@ -56,7 +56,7 @@ function Page() {
             <Grid item xs={12} md={9.5}>
               <Box sx={{ height: '465px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
                 <Typography variant="h6" gutterBottom>
-                  Total Revenue from Type of Services
+                  Revenue from Services
                 </Typography>
                 <LoadBarChart_DataPoint2 selectedClinic={selectedClinic} selectedYear={selectedYear} />
               </Box>

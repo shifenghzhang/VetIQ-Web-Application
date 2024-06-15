@@ -114,7 +114,7 @@ const DonutChart_DataPoint11: React.FC<PieChartProps> = ({ data }) => {
   
       // Change the legend text position 
       legend.append('text')
-        .attr('x', 16)
+        .attr('x', 20)
         .attr('y', 6.5)
         .attr('dy', '.35em')
         .style('font-size', '12px') // Decrease font size of the text
