@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
+import { colourPalette } from '../../_components/chartcolourPalette'; // Import colour palette
 
 interface PieChartProps {
   data: { TransactionTypeName: string; TotalRevenue: number; PercentageContribution: number }[];
@@ -14,20 +15,26 @@ const PieChart_DataPoint3: React.FC<PieChartProps> = ({ data }) => {
       if (!svgRef.current || !containerRef.current) return;
 
       const containerWidth = containerRef.current.clientWidth;
-      const containerHeight = containerRef.current.clientHeight;
+      const margin = { top: 40, right: 40, bottom: 40, left: 40 }; // Increase top margin for more space
 
-      const width = containerWidth;
-      const height = containerHeight;
+      const width = containerWidth - margin.left - margin.right;
+      const height = 280; 
       const radius = Math.min(width, height) / 2;
-      const color = d3.scaleOrdinal(d3.schemeCategory10);
 
-      d3.select(svgRef.current).selectAll('*').remove(); // Clear previous chart
+      const colour = d3.scaleOrdinal()
+        .domain(data.map(d => d.TransactionTypeName))
+        .range(colourPalette);
 
       const svg = d3.select(svgRef.current)
-        .attr('width', width + 200) // Add extra width for legend
+        .attr('width', containerWidth)
         .attr('height', height)
-        .append('g')
-        .attr('transform', `translate(${width / 2},${height / 2})`);
+        .style('overflow', 'visible');
+
+      svg.selectAll('*').remove();
+
+      // Position the pie chart slightly to the left
+      const chartGroup = svg.append('g')
+        .attr('transform', `translate(${width / 3},${height / 2 + 50})`); // Adjusted left positioning
 
       const pie = d3.pie<{ TransactionTypeName: string; TotalRevenue: number; PercentageContribution: number }>()
         .value(d => d.PercentageContribution)(data);
@@ -36,50 +43,57 @@ const PieChart_DataPoint3: React.FC<PieChartProps> = ({ data }) => {
         .innerRadius(0)
         .outerRadius(radius);
 
-      svg.selectAll('path')
+      chartGroup.selectAll('path')
         .data(pie)
         .enter().append('path')
         .attr('d', arc)
-        .attr('fill', d => color(d.data.TransactionTypeName))
+        .attr('fill', d => colour(d.data.TransactionTypeName) as string)
         .attr('stroke', 'white')
         .style('stroke-width', '2px');
 
-      // Adding legend
-      const legend = d3.select(svgRef.current)
-        .append('g')
-        .attr('transform', `translate(${width}, ${20})`); // Position the legend
+      // Calculate total percentage contribution
+      const totalPercentage = d3.sum(data, d => d.PercentageContribution);
 
-      legend.selectAll('rect')
+      // Position the legend
+      const legendWidth = 120; // Adjust width as needed
+      const legendHeight = data.length * 20; // Height of the legend based on number of items
+      const legendX = width + margin.right - legendWidth - 90; // Right side of the SVG minus margin and legend width
+      const legendY = (height - legendHeight) / 2 + 50; // Center vertically
+
+      const legendGroup = svg.append('g')
+        .attr('transform', `translate(${legendX},${legendY})`);
+
+      legendGroup.selectAll('rect')
         .data(data)
         .enter().append('rect')
         .attr('x', 0)
         .attr('y', (d, i) => i * 20)
         .attr('width', 18)
         .attr('height', 18)
-        .style('fill', d => color(d.TransactionTypeName));
+        .style('fill', d => colour(d.TransactionTypeName) as string);
 
-      legend.selectAll('text')
+      legendGroup.selectAll('text')
         .data(data)
         .enter().append('text')
         .attr('x', 24)
         .attr('y', (d, i) => i * 20 + 9)
         .attr('dy', '.35em')
-        .text(d => `${d.TransactionTypeName} (${(d.PercentageContribution * 1).toFixed(2)}%)`);
+        .text(d => `${d.TransactionTypeName} (${((d.PercentageContribution / totalPercentage) * 100).toFixed(2)}%)`);
     };
 
     renderChart();
 
-    window.addEventListener('resize', renderChart);
-    return () => window.removeEventListener('resize', renderChart);
+    const handleResize = () => {
+      renderChart();
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, [data]);
 
-  return <div ref={containerRef} style={{ width: '100%', height: '100%' }}><svg ref={svgRef} /></div>;
+  return <div ref={containerRef} style={{ width: '100%', height: '300px', display: 'flex', justifyContent: 'center' }}><svg ref={svgRef}></svg></div>;
 };
 
 export default PieChart_DataPoint3;
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> 57558663ce470057351e80d5065af23b92d43d45

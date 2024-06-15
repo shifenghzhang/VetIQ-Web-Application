@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import BarChart_DataPoint2 from './BarChart_DataPoint2';
 import PieChart_DataPoint3 from './PieChart_DataPoint3';
-import PieChart_DataPoint1 from './PieChart_DataPoint1';
+import DonutChart_DataPoint1 from './DonutChart_DataPoint1';
 
 // Helper function to build query string
 const buildQueryString = (selectedClinic: number[], selectedYear: number[]) => {
@@ -23,7 +23,7 @@ interface UsagePercentage {
   TotalUsage: number;
 }
 
-const LoadPieChart_DataPoint1: React.FC<{ selectedClinic: number[], selectedYear: number[] }> = ({ selectedClinic, selectedYear }) => {
+const LoadDonutChart_DataPoint1: React.FC<{ selectedClinic: number[], selectedYear: number[] }> = ({ selectedClinic, selectedYear }) => {
   const [usageData, setUsageData] = useState<UsagePercentage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -64,7 +64,7 @@ const LoadPieChart_DataPoint1: React.FC<{ selectedClinic: number[], selectedYear
     return <p>Error: {error}</p>;
   }
 
-  return <PieChart_DataPoint1 data={usageData} />;
+  return <DonutChart_DataPoint1 data={usageData} />;
 };
 
 // Loading Data Point 2
@@ -160,7 +160,6 @@ const LoadServiceRevenue = ({ selectedClinic, selectedYear }: { selectedClinic: 
 
   return (
     <div>
-      <h2>Revenue From Services</h2>
       <ul>
         {revenueData.map((service, index) => (
           <li key={index}>
@@ -210,7 +209,6 @@ const LoadServiceRevenueWOConsultation = ({ selectedClinic, selectedYear }: { se
 
   return (
     <div>
-      <h2>Revenue From Services Without Consultation</h2>
       <ul>
         {revenueData.map((service, index) => (
           <li key={index}>
@@ -312,7 +310,6 @@ const LoadTopServices = ({ selectedClinic, selectedYear }: { selectedClinic: num
 
   return (
     <div>
-      <h2>Top Services Contribution</h2>
       <ul style={{ listStyle: 'none', padding: 0 }}>
         {listData.map((service, index) => (
           <li key={index} style={{ marginBottom: '5px' }}>
@@ -324,7 +321,7 @@ const LoadTopServices = ({ selectedClinic, selectedYear }: { selectedClinic: num
   );
 };
 
-export { LoadPieChart_DataPoint1, 
+export { LoadDonutChart_DataPoint1, 
           LoadBarChart_DataPoint2, LoadServiceRevenue, LoadServiceRevenueWOConsultation,
           LoadPieChart_DataPoint3, LoadTopServices };
 

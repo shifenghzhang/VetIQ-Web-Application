@@ -4,8 +4,8 @@ import { Grid, Box, Typography } from '@mui/material';
 import Select from 'react-select';
 import { clinicOptions, yearOptions, handleClinicChange, handleYearChange } from '../../_components/DropdownOptions';
 import { type Option } from '../../_components/DropdownOptions';
-import { LoadDonutChart_DataPoint1, LoadBarChart_DataPoint2, LoadPieChart_DataPoint3, 
-          LoadServiceRevenue, LoadServiceRevenueWOConsultation, LoadTopServices } from './LoadData'; // Import charts or other data
+import { LoadReturningPatientsData, LoadConfirmedAppointmentsData, LoadTotalAppointmentsData,
+          LoadRetentionAndAcquisitionData, LoadAttendedAppointmentsData, LoadPatientsComparisonData} from './LoadData'; // Import charts or other data
 
 
 function Page() {
@@ -34,64 +34,72 @@ function Page() {
       </div>
 
       <Grid container spacing={2}>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3}>
           <Box sx={{ height: '125px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
             <Typography variant="h6" gutterBottom>
-              Revenue From Services
+              Returning Patients
             </Typography>
-            <LoadServiceRevenue selectedClinic={selectedClinic} selectedYear={selectedYear} />
+            <LoadReturningPatientsData selectedClinic={selectedClinic} selectedYear={selectedYear} />
           </Box>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3}>
           <Box sx={{ height: '125px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
             <Typography variant="h6" gutterBottom>
-              Revenue From Services (Excluding Consultation)
+              Scheduled Appointments
             </Typography>
-            <LoadServiceRevenueWOConsultation selectedClinic={selectedClinic} selectedYear={selectedYear} />
+            <LoadTotalAppointmentsData selectedClinic={selectedClinic} selectedYear={selectedYear} />
           </Box>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3}>
           <Box sx={{ height: '125px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
             <Typography variant="h6" gutterBottom>
-              Service Revenue Summary
+              Confirmed Appointments
             </Typography>
-            {/* Add relevant content here */}
+            <LoadConfirmedAppointmentsData selectedClinic={selectedClinic} selectedYear={selectedYear} />
+          </Box>
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <Box sx={{ height: '125px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
+            <Typography variant="h6" gutterBottom>
+              Appointments Attended
+            </Typography>
+            <LoadAttendedAppointmentsData selectedClinic={selectedClinic} selectedYear={selectedYear} />
           </Box>
         </Grid>
         <Grid item xs={12}>
           <Grid container spacing={2}>
-            <Grid item xs={12} md={9.5}>
+            <Grid item xs={12} md={8}>
               <Box sx={{ height: '465px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
                 <Typography variant="h6" gutterBottom>
-                  Total Revenue from Type of Services
+                  Trends in Patient Retention & Acquisition 
                 </Typography>
-                <LoadBarChart_DataPoint2 selectedClinic={selectedClinic} selectedYear={selectedYear} />
+                <LoadRetentionAndAcquisitionData selectedClinic={selectedClinic} selectedYear={selectedYear} />
               </Box>
             </Grid>
-            <Grid item xs={12} md={2.5}>
+            <Grid item xs={12} md={4}>
               <Box sx={{ height: '465px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
                 <Typography variant="h6" gutterBottom>
                   Top Services Contribution
                 </Typography>
-                <LoadTopServices selectedClinic={selectedClinic} selectedYear={selectedYear} />
+                <LoadPatientsComparisonData selectedClinic={selectedClinic} selectedYear={selectedYear} />
               </Box>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Box sx={{ height: '420px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
+          <Box sx={{ height: '250px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
             <Typography variant="h6" gutterBottom>
               Percentage of services contributed to the revenue
             </Typography>
-            <LoadPieChart_DataPoint3 selectedClinic={selectedClinic} selectedYear={selectedYear} />
+            
           </Box>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Box sx={{ height: '420px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
+          <Box sx={{ height: '250px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
             <Typography variant="h6" gutterBottom>
               Percentage of services used
             </Typography>
-            <LoadDonutChart_DataPoint1 selectedClinic={selectedClinic} selectedYear={selectedYear} />
+            
           </Box>
         </Grid>
       </Grid>
