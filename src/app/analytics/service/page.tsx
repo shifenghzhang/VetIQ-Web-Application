@@ -35,7 +35,7 @@ function Page() {
       </div>
 
       <Grid container spacing={2}>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={4.75}>
           <Box sx={{ height: '125px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
             <Typography variant="h6" gutterBottom>
               Revenue From Services
@@ -43,20 +43,12 @@ function Page() {
             <LoadServiceRevenue selectedClinic={selectedClinic} selectedYear={selectedYear} />
           </Box>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={4.75}>
           <Box sx={{ height: '125px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
             <Typography variant="h6" gutterBottom>
               Revenue From Services (Excluding Consultation)
             </Typography>
             <LoadServiceRevenueWOConsultation selectedClinic={selectedClinic} selectedYear={selectedYear} />
-          </Box>
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <Box sx={{ height: '125px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
-            <Typography variant="h6" gutterBottom>
-              Service Revenue Summary
-            </Typography>
-            {/* Add relevant content here */}
           </Box>
         </Grid>
         <Grid item xs={12}>

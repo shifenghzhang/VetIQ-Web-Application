@@ -5,7 +5,8 @@ import Select from 'react-select';
 import { clinicOptions, yearOptions, handleClinicChange, handleYearChange } from '../../_components/DropdownOptions';
 import { type Option } from '../../_components/DropdownOptions';
 import { LoadReturningPatientsData, LoadConfirmedAppointmentsData, LoadTotalAppointmentsData,
-          LoadRetentionAndAcquisitionData, LoadAttendedAppointmentsData, LoadPatientsComparisonData} from './LoadData'; // Import charts or other data
+          LoadRetentionAndAcquisitionData, LoadAttendedAppointmentsData, LoadPatientsComparisonData,
+           LoadAppointmentDuration, AnimalAppointmentPercentages} from './LoadData'; // Import charts or other data
 
 
 function Page() {
@@ -35,15 +36,7 @@ function Page() {
 
       <Grid container spacing={2}>
         <Grid item xs={12} md={3}>
-          <Box sx={{ height: '125px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
-            <Typography variant="h6" gutterBottom>
-              Returning Patients
-            </Typography>
-            <LoadReturningPatientsData selectedClinic={selectedClinic} selectedYear={selectedYear} />
-          </Box>
-        </Grid>
-        <Grid item xs={12} md={3}>
-          <Box sx={{ height: '125px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
+          <Box sx={{ height: '100px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
             <Typography variant="h6" gutterBottom>
               Scheduled Appointments
             </Typography>
@@ -51,7 +44,7 @@ function Page() {
           </Box>
         </Grid>
         <Grid item xs={12} md={3}>
-          <Box sx={{ height: '125px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
+          <Box sx={{ height: '100px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
             <Typography variant="h6" gutterBottom>
               Confirmed Appointments
             </Typography>
@@ -59,11 +52,19 @@ function Page() {
           </Box>
         </Grid>
         <Grid item xs={12} md={3}>
-          <Box sx={{ height: '125px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
+          <Box sx={{ height: '100px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
             <Typography variant="h6" gutterBottom>
               Appointments Attended
             </Typography>
             <LoadAttendedAppointmentsData selectedClinic={selectedClinic} selectedYear={selectedYear} />
+          </Box>
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <Box sx={{ height: '100px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
+              <Typography variant="h6" gutterBottom>
+                Returning Patients
+              </Typography>
+              <LoadReturningPatientsData selectedClinic={selectedClinic} selectedYear={selectedYear} />
           </Box>
         </Grid>
         <Grid item xs={12}>
@@ -79,27 +80,27 @@ function Page() {
             <Grid item xs={12} md={4}>
               <Box sx={{ height: '465px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
                 <Typography variant="h6" gutterBottom>
-                  Top Services Contribution
+                  New Patient vs. Returning Patient
                 </Typography>
                 <LoadPatientsComparisonData selectedClinic={selectedClinic} selectedYear={selectedYear} />
               </Box>
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={7.5}>
           <Box sx={{ height: '250px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
             <Typography variant="h6" gutterBottom>
-              Percentage of services contributed to the revenue
+              Appointment Duration
             </Typography>
-            
+            <LoadAppointmentDuration selectedClinic={selectedClinic} selectedYear={selectedYear} />
           </Box>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={4.5}>
           <Box sx={{ height: '250px', backgroundColor: '#ffffff', borderRadius: '20px', border: '1px solid #ccc', padding: '16px' }}>
             <Typography variant="h6" gutterBottom>
-              Percentage of services used
+               Animal Appointment Percentages
             </Typography>
-            
+            <AnimalAppointmentPercentages selectedClinic={selectedClinic} selectedYear={selectedYear} />
           </Box>
         </Grid>
       </Grid>

@@ -231,6 +231,7 @@ def get_patient_retention_and_acquisition():
                 SUM(CASE WHEN AppointmentType_Name LIKE '%New%' THEN 1 ELSE 0 END) AS NewPatientVisits
             FROM dbo.FactAppointment
             WHERE Clinic_ID BETWEEN 3 AND 7
+                AND YEAR(Appointment_DateTime) <= 2024  -- Year limit up to 2024
         """
         
         params = []
@@ -394,6 +395,85 @@ def get_appointment_duration_stats():
         conn.close()
         
         return jsonify(appointment_duration_stats)
+
+    except Exception as e:
+        return jsonify({'error': str(e)})
+    
+    
+#Data Point 14
+@appointmentData_bp.route('/appointmentData/petAnimalPercentages', methods=['GET'])
+def get_animal_appointment_percentages():
+    try:
+        clinic_ids = parse_comma_separated_ints(request.args.get('ClinicID', default=None))
+        years = parse_comma_separated_ints(request.args.get('Year', default=None))
+        
+        excluded_appointment_types = [
+            'No More', 'No Show 1', 'No Show 2', 'No Show 3',
+            'Unavailable', 'zNo Show', 'block off', 'Notice'
+        ]
+
+        base_query = """
+            SELECT 
+                CASE 
+                    WHEN dp.Species_Name IN ('Bird', 'Cat', 'Dog', 'Ferret', 'Fish', 'Rabbit', 'Rat') THEN 'Domestic Animal'
+                    WHEN dp.Species_Name IN ('Cattle', 'Equine', 'Goat', 'Pig') THEN 'Farm Animal'
+                    WHEN dp.Species_Name IN ('Lizard', 'Reptile', 'Snake') THEN 'Reptile'
+                    WHEN dp.Species_Name IN ('Amphibian', 'Chelonian', 'Native', 'Wildlife') THEN 'Exotic/Native'
+                    WHEN dp.Species_Name IN ('Other', 'Rodent', 'Small Animal', 'Small Mammal', 'Unknown') THEN 'Other'
+                    ELSE 'Unknown'
+                END AS AnimalCategory, 
+                COUNT(fa.Patient_ID) as TotalAppointments,
+                SUM(CASE WHEN fa.AppointmentType_Name NOT IN ({}) THEN 1 ELSE 0 END) as AttendedAppointments
+            FROM dbo.FactAppointment fa
+            INNER JOIN dbo.DimPatient dp ON fa.Patient_ID = dp.Patient_ID
+            WHERE dp.Species_Name IS NOT NULL
+        """.format(','.join(['?']*len(excluded_appointment_types)))
+
+        params = excluded_appointment_types
+        
+        if clinic_ids:
+            base_query += " AND fa.Clinic_ID IN (" + ','.join(['?']*len(clinic_ids)) + ")"
+            params.extend(clinic_ids)
+            
+        if years:
+            base_query += " AND YEAR(fa.Appointment_DateTime) IN (" + ','.join(['?']*len(years)) + ")"
+            params.extend(years)
+          
+        base_query += """
+            GROUP BY 
+                CASE 
+                    WHEN dp.Species_Name IN ('Bird', 'Cat', 'Dog', 'Ferret', 'Fish', 'Rabbit', 'Rat') THEN 'Domestic Animal'
+                    WHEN dp.Species_Name IN ('Cattle', 'Equine', 'Goat', 'Pig') THEN 'Farm Animal'
+                    WHEN dp.Species_Name IN ('Lizard', 'Reptile', 'Snake') THEN 'Reptile'
+                    WHEN dp.Species_Name IN ('Amphibian', 'Chelonian', 'Native', 'Wildlife') THEN 'Exotic/Native'
+                    WHEN dp.Species_Name IN ('Other', 'Rodent', 'Small Animal', 'Small Mammal', 'Unknown') THEN 'Other'
+                    ELSE 'Unknown'
+                END
+        """
+        
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Execute the query
+        cursor.execute(base_query, params)
+        result = cursor.fetchall()
+        
+        animal_appointment_data = []
+        for row in result:
+            animal_category = row[0]
+            total_appointments = row[1]
+            attended_appointments_count = row[2]
+            attended_appointments_percentage = (attended_appointments_count / total_appointments * 100) if total_appointments > 0 else 0.0
+            animal_appointment_data.append({
+                'AnimalCategory': animal_category,
+                'TotalAppointments': total_appointments,
+                'AttendedAppointmentsCount': attended_appointments_count,
+                'AttendedAppointmentsPercentage': attended_appointments_percentage
+            })
+
+        conn.close()
+
+        return jsonify(animal_appointment_data)
 
     except Exception as e:
         return jsonify({'error': str(e)})

@@ -82,7 +82,6 @@ const DonutChart_DataPoint1: React.FC<PieChartProps> = ({ data }) => {
           }
         });
       };
-      
 
       // Initial label positions
       const labels = labelData.map(d => {
@@ -118,7 +117,7 @@ const DonutChart_DataPoint1: React.FC<PieChartProps> = ({ data }) => {
 
       // Labels outside slices
       svg.selectAll('text')
-        .data(labels)
+        .data(labels) 
         .enter().append('text')
         .attr('transform', d => `translate(${d.x},${d.y})`)
         .attr('text-anchor', d => (d.x > 0) ? 'start' : 'end')
