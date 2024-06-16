@@ -63,11 +63,11 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({ isOpen, onRequestCl
       <h2 className="text-2xl mb-4 mt-10 font-semibold text-white bg-customDarkBlue p-4 rounded-md">We have a question for you!</h2>
 
       <div className="text-left px-6 mt-2 text-sm">
-        <p className="mb-4 font-semibold">How do you currently manage appointments in your practice? (Select all that apply)</p>
+        <p className="mb-4 font-semibold">How do you currently manage appointments in your practice?</p>
         <div className="space-y-2 ml-4">
           <label className="block">
             <input
-              type="checkbox"
+              type="radio"
               name="appointment"
               value="Manual booking (phone/email)"
               checked={selectedOption.includes('Manual booking (phone/email)')}
@@ -78,7 +78,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({ isOpen, onRequestCl
           </label>
           <label className="block">
             <input
-              type="checkbox"
+              type="radio"
               name="appointment"
               value="Practice management software"
               checked={selectedOption.includes('Practice management software')}
@@ -89,7 +89,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({ isOpen, onRequestCl
           </label>
           <label className="block">
             <input
-              type="checkbox"
+              type="radio"
               name="appointment"
               value="Online booking system"
               checked={selectedOption.includes('Online booking system')}
@@ -100,7 +100,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({ isOpen, onRequestCl
           </label>
           <label className="block">
             <input
-              type="checkbox"
+              type="radio"
               name="appointment"
               value="Walk-ins"
               checked={selectedOption.includes('Walk-ins')}
@@ -111,7 +111,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({ isOpen, onRequestCl
           </label>
           <label className="block">
             <input
-              type="checkbox"
+              type="radio"
               name="appointment"
               value="Others"
               checked={selectedOption.includes('Others')}
