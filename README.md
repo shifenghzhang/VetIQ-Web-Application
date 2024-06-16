@@ -8,8 +8,6 @@ For VPN and Database connection, refer to "Database access.docx" included in the
 
 ## Running the Application
 
-### Frontend
-
 1. **Clone the repository**
 
 2. **Install the dependencies**:
