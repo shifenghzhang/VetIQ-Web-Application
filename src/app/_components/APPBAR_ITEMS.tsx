@@ -1,6 +1,5 @@
 import {BsHouseDoor} from "react-icons/bs"
 import { BsQuestionCircle } from "react-icons/bs";
-import { BsEnvelope } from "react-icons/bs";
 import { TbDeviceDesktopAnalytics } from "react-icons/tb";
 import { IoSettingsOutline } from "react-icons/io5";
 
@@ -29,11 +28,6 @@ export const APPNAV_ITEMS: AppNavItem[]=[
         title: "Help",
         path: "/help",
         icon: <BsQuestionCircle size={20} />,
-    },
-    {
-        title: "Feedback",
-        path: "/feedback",
-        icon: <BsEnvelope size={20} />
     },
     {
         title: "Settings",
