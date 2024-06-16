@@ -50,7 +50,7 @@ function Page() {
           console.log("Survey not taken yet. Setting timer to show modal.");
           const timer = setTimeout(() => {
             setIsModalOpen(true);
-          }, 2000);
+          }, 1000);
 
           return () => clearTimeout(timer);
         } else {
@@ -99,6 +99,13 @@ function Page() {
   //Dropdown menu
   return (
     <div className="dashboard-container">
+      {user &&
+        <AnalyticsModal 
+          isOpen={isModalOpen}
+          onRequestClose={handleModalClose}
+          onSubmit={(answers) => handleModalSubmit(answers)}
+        />
+      }
       <div className="flex items-center mb-4 w-full max-w-xl"> 
         <Select //Create dropdown menu for selecting clinic
           isMulti
@@ -172,13 +179,7 @@ function Page() {
           </Box>
         </Grid>
       </Grid>
-      {user &&
-        <AnalyticsModal 
-          isOpen={isModalOpen}
-          onRequestClose={handleModalClose}
-          onSubmit={(answers) => handleModalSubmit(answers)}
-        />
-      }
+      
     </div>
   );
 }

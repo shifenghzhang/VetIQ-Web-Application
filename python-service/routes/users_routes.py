@@ -176,3 +176,21 @@ def add_analytics_service_survey():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@user_bp.route('/add_analytics_appointment_survey', methods=['POST'])
+def add_analytics_appointment_survey():
+    try:
+        data = request.json
+        user_id = data.get('user_id')
+        new_data = data.get('new_data')
+
+        result = users_collection.update_one(
+            {"user_id": int(user_id)},
+            {"$set": {"analytics_appointment_survey": new_data}}
+        )
+
+        if result.matched_count == 1:
+            return jsonify({"message": "Survey data added successfully."})
+        else:
+            return jsonify({"message": "User not found."}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
